@@ -880,6 +880,377 @@
         ::-webkit-scrollbar-thumb:hover {
             background: var(--text-muted);
         }
+
+        /* ==================== Search Box ==================== */
+        .search-box {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .search-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-input-wrapper .search-icon {
+            position: absolute;
+            left: 14px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            pointer-events: none;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 14px 12px 40px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+        }
+
+        .search-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .menu-item.hidden {
+            display: none;
+        }
+
+        .menu-item.highlight {
+            background: linear-gradient(90deg, rgba(99, 102, 241, 0.2) 0%, transparent 100%);
+        }
+
+        .menu-category.hidden {
+            display: none;
+        }
+
+        /* ==================== Favorites ==================== */
+        .favorites-section {
+            display: none;
+        }
+
+        .favorites-section.has-items {
+            display: block;
+        }
+
+        .menu-item .favorite-btn {
+            margin-left: auto;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            opacity: 0.3;
+            transition: all 0.2s ease;
+            padding: 4px;
+        }
+
+        .menu-item:hover .favorite-btn {
+            opacity: 0.7;
+        }
+
+        .menu-item .favorite-btn:hover {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+
+        .menu-item .favorite-btn.active {
+            opacity: 1;
+        }
+
+        .tool-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .tool-header h2 {
+            margin-bottom: 0;
+        }
+
+        .tool-favorite-btn {
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-muted);
+        }
+
+        .tool-favorite-btn:hover {
+            border-color: var(--warning);
+            background: rgba(245, 158, 11, 0.1);
+        }
+
+        .tool-favorite-btn.active {
+            border-color: var(--warning);
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+        }
+
+        /* ==================== Chain Feature ==================== */
+        .chain-wrapper {
+            margin-top: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chain-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .chain-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 10px 16px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-family: inherit;
+            color: var(--text-secondary);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chain-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent-light);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .chain-menu {
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            margin-bottom: 8px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            min-width: 220px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+
+        .chain-menu.show {
+            display: block;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .chain-menu-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            transition: all 0.15s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .chain-menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .chain-menu-item:hover {
+            background: var(--bg-card-hover);
+            color: var(--text-primary);
+        }
+
+        .chain-menu-item .chain-icon {
+            font-size: 1rem;
+        }
+
+        /* ==================== Ad Containers (AdSense Ready) ==================== */
+        .ad-container {
+            background: var(--bg-card);
+            border: 1px dashed var(--border-light);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        /* When AdSense is active, remove placeholder styles */
+        .ad-container.ad-loaded {
+            background: transparent;
+            border: none;
+        }
+
+        .ad-container-top {
+            width: 728px;
+            max-width: 100%;
+            height: 90px;
+        }
+
+        .ad-container-sidebar {
+            width: 300px;
+            height: 250px;
+            position: sticky;
+            top: calc(var(--header-height) + 32px);
+        }
+
+        .ad-placeholder-text {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+
+        /* Mobile Ad Adjustments */
+        @media (max-width: 768px) {
+            .ad-banner-top {
+                display: none;
+            }
+
+            .ad-sidebar {
+                display: block;
+                width: 100%;
+                margin-top: 24px;
+            }
+
+            .ad-container-sidebar {
+                width: 100%;
+                max-width: 300px;
+                margin: 0 auto;
+                position: static;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .ad-sidebar {
+                display: none;
+            }
+        }
+
+        /* ==================== Enhanced Mobile Styles ==================== */
+        @media (max-width: 768px) {
+            .content-wrapper {
+                padding: 16px;
+                flex-direction: column;
+            }
+
+            .tool-section {
+                padding: 20px;
+            }
+
+            .tool-section h2 {
+                font-size: 1.25rem;
+            }
+
+            .tool-section h2 .tool-icon {
+                width: 36px;
+                height: 36px;
+                font-size: 1rem;
+            }
+
+            .tool-header {
+                flex-wrap: wrap;
+            }
+
+            .tool-favorite-btn {
+                padding: 6px 10px;
+                font-size: 0.95rem;
+            }
+
+            textarea {
+                min-height: 120px;
+                font-size: 0.85rem;
+                padding: 14px;
+            }
+
+            .btn {
+                padding: 10px 14px;
+                font-size: 0.8rem;
+            }
+
+            .btn-group {
+                gap: 8px;
+            }
+
+            .output-area {
+                padding: 14px;
+                font-size: 0.8rem;
+                min-height: 100px;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .stat-card {
+                padding: 14px;
+            }
+
+            .stat-value {
+                font-size: 1.75rem;
+            }
+
+            .options-group {
+                padding: 14px;
+                gap: 14px;
+            }
+
+            .chain-wrapper {
+                flex-wrap: wrap;
+            }
+
+            .chain-menu {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                margin-bottom: 0;
+                border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+                max-height: 60vh;
+            }
+
+            .search-box {
+                padding: 12px 16px;
+            }
+
+            .menu-item {
+                padding: 10px 16px;
+                font-size: 0.85rem;
+            }
+
+            .header-title {
+                font-size: 0.9rem;
+                flex: 1;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .theme-toggle {
+                padding: 8px 10px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -890,61 +1261,85 @@
         <div class="sidebar-header">
             <h1><span class="logo-icon">T</span> ToolKit</h1>
         </div>
-        <nav>
-            <div class="menu-category">텍스트 분석</div>
-            <a class="menu-item active" data-section="char-counter">
+        <div class="search-box">
+            <div class="search-input-wrapper">
+                <span class="search-icon">🔍</span>
+                <input type="text" class="search-input" id="toolSearch" placeholder="도구 검색...">
+            </div>
+        </div>
+        <nav id="toolNav">
+            <!-- Favorites Section -->
+            <div class="favorites-section" id="favoritesSection">
+                <div class="menu-category">⭐ 즐겨찾기</div>
+                <div id="favoritesContainer"></div>
+            </div>
+
+            <div class="menu-category" data-category="text-analysis">텍스트 분석</div>
+            <a class="menu-item active" data-section="char-counter" data-keywords="글자수 바이트 계산 문자 카운트 길이">
                 <span class="menu-icon">📊</span>
-                글자수 / 바이트수 계산기
+                <span class="menu-text">글자수 / 바이트수 계산기</span>
+                <button class="favorite-btn" data-tool="char-counter">☆</button>
             </a>
 
-            <div class="menu-category">텍스트 변환</div>
-            <a class="menu-item" data-section="case-converter">
+            <div class="menu-category" data-category="text-transform">텍스트 변환</div>
+            <a class="menu-item" data-section="case-converter" data-keywords="카멜 스네이크 파스칼 케밥 케이스 변환 camel snake pascal kebab">
                 <span class="menu-icon">🔄</span>
-                케이스 변환
+                <span class="menu-text">케이스 변환</span>
+                <button class="favorite-btn" data-tool="case-converter">☆</button>
             </a>
-            <a class="menu-item" data-section="letter-case">
+            <a class="menu-item" data-section="letter-case" data-keywords="대문자 소문자 변환 uppercase lowercase title">
                 <span class="menu-icon">🔠</span>
-                대소문자 변환
+                <span class="menu-text">대소문자 변환</span>
+                <button class="favorite-btn" data-tool="letter-case">☆</button>
             </a>
-            <a class="menu-item" data-section="whitespace">
+            <a class="menu-item" data-section="whitespace" data-keywords="공백 줄바꿈 정리 trim space 빈줄">
                 <span class="menu-icon">📄</span>
-                줄바꿈 / 공백 정리
+                <span class="menu-text">줄바꿈 / 공백 정리</span>
+                <button class="favorite-btn" data-tool="whitespace">☆</button>
             </a>
-            <a class="menu-item" data-section="duplicate-lines">
+            <a class="menu-item" data-section="duplicate-lines" data-keywords="중복 제거 줄 라인 unique 유니크">
                 <span class="menu-icon">📑</span>
-                중복 줄 제거
+                <span class="menu-text">중복 줄 제거</span>
+                <button class="favorite-btn" data-tool="duplicate-lines">☆</button>
             </a>
 
-            <div class="menu-category">개발자 도구</div>
-            <a class="menu-item" data-section="json-formatter">
+            <div class="menu-category" data-category="dev-tools">개발자 도구</div>
+            <a class="menu-item" data-section="json-formatter" data-keywords="json 포맷 정렬 formatter 압축 minify beautify">
                 <span class="menu-icon">{ }</span>
-                JSON Formatter
+                <span class="menu-text">JSON Formatter</span>
+                <button class="favorite-btn" data-tool="json-formatter">☆</button>
             </a>
-            <a class="menu-item" data-section="base64">
+            <a class="menu-item" data-section="base64" data-keywords="base64 인코딩 디코딩 encode decode 암호화">
                 <span class="menu-icon">🔐</span>
-                Base64 인코딩
+                <span class="menu-text">Base64 인코딩</span>
+                <button class="favorite-btn" data-tool="base64">☆</button>
             </a>
-            <a class="menu-item" data-section="url-encode">
+            <a class="menu-item" data-section="url-encode" data-keywords="url 인코딩 디코딩 encode decode 주소 uri">
                 <span class="menu-icon">🔗</span>
-                URL 인코딩
+                <span class="menu-text">URL 인코딩</span>
+                <button class="favorite-btn" data-tool="url-encode">☆</button>
             </a>
-            <a class="menu-item" data-section="timestamp">
+            <a class="menu-item" data-section="timestamp" data-keywords="타임스탬프 unix 시간 날짜 변환 epoch">
                 <span class="menu-icon">⏰</span>
-                타임스탬프 변환
+                <span class="menu-text">타임스탬프 변환</span>
+                <button class="favorite-btn" data-tool="timestamp">☆</button>
             </a>
 
-            <div class="menu-category">계산 / 생성</div>
-            <a class="menu-item" data-section="date-calc">
+            <div class="menu-category" data-category="calc-gen">계산 / 생성</div>
+            <a class="menu-item" data-section="date-calc" data-keywords="날짜 계산 d-day 디데이 일수">
                 <span class="menu-icon">📅</span>
-                날짜 계산기
+                <span class="menu-text">날짜 계산기</span>
+                <button class="favorite-btn" data-tool="date-calc">☆</button>
             </a>
-            <a class="menu-item" data-section="password-gen">
+            <a class="menu-item" data-section="password-gen" data-keywords="비밀번호 생성 password 랜덤 random">
                 <span class="menu-icon">🔑</span>
-                비밀번호 생성기
+                <span class="menu-text">비밀번호 생성기</span>
+                <button class="favorite-btn" data-tool="password-gen">☆</button>
             </a>
-            <a class="menu-item" data-section="uuid-gen">
+            <a class="menu-item" data-section="uuid-gen" data-keywords="uuid 생성 고유 식별자 guid">
                 <span class="menu-icon">🆔</span>
-                UUID 생성기
+                <span class="menu-text">UUID 생성기</span>
+                <button class="favorite-btn" data-tool="uuid-gen">☆</button>
             </a>
         </nav>
     </aside>
@@ -959,11 +1354,17 @@
             </button>
         </header>
 
-        <!-- 광고 영역 - 상단 배너 -->
+        <!-- 광고 영역 - 상단 배너 (728x90) -->
         <div class="ad-banner-top">
-            <div class="ad-placeholder">
-                <!-- 광고 영역 - 728x90 배너 -->
-                광고 영역 (728 x 90)
+            <div class="ad-container ad-container-top" id="adBannerTop">
+                <span class="ad-placeholder-text">AD</span>
+                <!-- Google AdSense 삽입 시 위 span 제거 후 아래 주석 해제
+                <ins class="adsbygoogle"
+                     style="display:inline-block;width:728px;height:90px"
+                     data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                     data-ad-slot="XXXXXXXXXX"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                -->
             </div>
         </div>
 
@@ -972,7 +1373,10 @@
 
                 <!-- 1. 글자수 / 바이트수 계산기 -->
                 <section class="tool-section active" id="char-counter">
-                    <h2><span class="tool-icon">📊</span> 글자수 계산기</h2>
+                    <div class="tool-header">
+                        <h2><span class="tool-icon">📊</span> 글자수 계산기</h2>
+                        <button class="tool-favorite-btn" data-tool="char-counter">☆</button>
+                    </div>
                     <p class="tool-description">입력한 텍스트의 글자수와 바이트수를 실시간으로 계산합니다.</p>
 
                     <div class="input-group">
@@ -1006,7 +1410,10 @@
 
                 <!-- 2. 케이스 변환 (카멜케이스 ↔ 스네이크케이스) -->
                 <section class="tool-section" id="case-converter">
-                    <h2><span class="tool-icon">🔄</span> 케이스 변환</h2>
+                    <div class="tool-header">
+                        <h2><span class="tool-icon">🔄</span> 케이스 변환</h2>
+                        <button class="tool-favorite-btn" data-tool="case-converter">☆</button>
+                    </div>
                     <p class="tool-description">카멜케이스, 스네이크케이스, 파스칼케이스, 케밥케이스를 상호 변환합니다.</p>
 
                     <div class="input-group">
@@ -1027,11 +1434,22 @@
                         <button class="btn btn-copy" onclick="copyOutput('caseOutput')">📋 복사</button>
                     </div>
                     <div class="output-area" id="caseOutput">변환 결과가 여기에 표시됩니다.</div>
+                    <div class="chain-wrapper">
+                        <div class="chain-dropdown">
+                            <button class="chain-btn" onclick="Chain.toggleMenu(this)">
+                                <span>🔗</span> 다른 도구로 보내기 <span>▾</span>
+                            </button>
+                            <div class="chain-menu" data-source="caseOutput"></div>
+                        </div>
+                    </div>
                 </section>
 
                 <!-- 3. 대소문자 변환 -->
                 <section class="tool-section" id="letter-case">
-                    <h2><span class="tool-icon">🔠</span> 대소문자 변환</h2>
+                    <div class="tool-header">
+                        <h2><span class="tool-icon">🔠</span> 대소문자 변환</h2>
+                        <button class="tool-favorite-btn" data-tool="letter-case">☆</button>
+                    </div>
                     <p class="tool-description">텍스트의 대소문자를 다양한 형식으로 변환합니다.</p>
 
                     <div class="input-group">
@@ -1052,11 +1470,22 @@
                         <button class="btn btn-copy" onclick="copyOutput('letterCaseOutput')">📋 복사</button>
                     </div>
                     <div class="output-area" id="letterCaseOutput">변환 결과가 여기에 표시됩니다.</div>
+                    <div class="chain-wrapper">
+                        <div class="chain-dropdown">
+                            <button class="chain-btn" onclick="Chain.toggleMenu(this)">
+                                <span>🔗</span> 다른 도구로 보내기 <span>▾</span>
+                            </button>
+                            <div class="chain-menu" data-source="letterCaseOutput"></div>
+                        </div>
+                    </div>
                 </section>
 
                 <!-- 4. 줄바꿈 / 공백 정리 -->
                 <section class="tool-section" id="whitespace">
-                    <h2><span class="tool-icon">📄</span> 공백 정리</h2>
+                    <div class="tool-header">
+                        <h2><span class="tool-icon">📄</span> 공백 정리</h2>
+                        <button class="tool-favorite-btn" data-tool="whitespace">☆</button>
+                    </div>
                     <p class="tool-description">연속된 공백이나 줄바꿈을 깔끔하게 정리합니다.</p>
 
                     <div class="input-group">
@@ -1077,11 +1506,22 @@
                         <button class="btn btn-copy" onclick="copyOutput('whitespaceOutput')">📋 복사</button>
                     </div>
                     <div class="output-area" id="whitespaceOutput">정리 결과가 여기에 표시됩니다.</div>
+                    <div class="chain-wrapper">
+                        <div class="chain-dropdown">
+                            <button class="chain-btn" onclick="Chain.toggleMenu(this)">
+                                <span>🔗</span> 다른 도구로 보내기 <span>▾</span>
+                            </button>
+                            <div class="chain-menu" data-source="whitespaceOutput"></div>
+                        </div>
+                    </div>
                 </section>
 
                 <!-- 5. 중복 줄 제거 -->
                 <section class="tool-section" id="duplicate-lines">
-                    <h2><span class="tool-icon">📑</span> 중복 줄 제거</h2>
+                    <div class="tool-header">
+                        <h2><span class="tool-icon">📑</span> 중복 줄 제거</h2>
+                        <button class="tool-favorite-btn" data-tool="duplicate-lines">☆</button>
+                    </div>
                     <p class="tool-description">중복된 줄을 제거하고 고유한 줄만 남깁니다.</p>
 
                     <div class="input-group">
@@ -1110,11 +1550,22 @@
                         <button class="btn btn-copy" onclick="copyOutput('duplicateOutput')">📋 복사</button>
                     </div>
                     <div class="output-area" id="duplicateOutput">결과가 여기에 표시됩니다.</div>
+                    <div class="chain-wrapper">
+                        <div class="chain-dropdown">
+                            <button class="chain-btn" onclick="Chain.toggleMenu(this)">
+                                <span>🔗</span> 다른 도구로 보내기 <span>▾</span>
+                            </button>
+                            <div class="chain-menu" data-source="duplicateOutput"></div>
+                        </div>
+                    </div>
                 </section>
 
                 <!-- 6. JSON Formatter -->
                 <section class="tool-section" id="json-formatter">
-                    <h2><span class="tool-icon">{ }</span> JSON Formatter</h2>
+                    <div class="tool-header">
+                        <h2><span class="tool-icon">{ }</span> JSON Formatter</h2>
+                        <button class="tool-favorite-btn" data-tool="json-formatter">☆</button>
+                    </div>
                     <p class="tool-description">JSON을 보기 좋게 정렬하고 유효성을 검사합니다.</p>
 
                     <div class="error-message" id="jsonError"></div>
@@ -1146,11 +1597,22 @@
                         <button class="btn btn-copy" onclick="copyOutput('jsonOutput')">📋 복사</button>
                     </div>
                     <div class="output-area" id="jsonOutput">JSON 결과가 여기에 표시됩니다.</div>
+                    <div class="chain-wrapper">
+                        <div class="chain-dropdown">
+                            <button class="chain-btn" onclick="Chain.toggleMenu(this)">
+                                <span>🔗</span> 다른 도구로 보내기 <span>▾</span>
+                            </button>
+                            <div class="chain-menu" data-source="jsonOutput"></div>
+                        </div>
+                    </div>
                 </section>
 
                 <!-- 7. Base64 인코딩/디코딩 -->
                 <section class="tool-section" id="base64">
-                    <h2><span class="tool-icon">🔐</span> Base64</h2>
+                    <div class="tool-header">
+                        <h2><span class="tool-icon">🔐</span> Base64</h2>
+                        <button class="tool-favorite-btn" data-tool="base64">☆</button>
+                    </div>
                     <p class="tool-description">텍스트를 Base64로 인코딩하거나 디코딩합니다.</p>
 
                     <div class="error-message" id="base64Error"></div>
@@ -1171,11 +1633,22 @@
                         <button class="btn btn-copy" onclick="copyOutput('base64Output')">📋 복사</button>
                     </div>
                     <div class="output-area" id="base64Output">결과가 여기에 표시됩니다.</div>
+                    <div class="chain-wrapper">
+                        <div class="chain-dropdown">
+                            <button class="chain-btn" onclick="Chain.toggleMenu(this)">
+                                <span>🔗</span> 다른 도구로 보내기 <span>▾</span>
+                            </button>
+                            <div class="chain-menu" data-source="base64Output"></div>
+                        </div>
+                    </div>
                 </section>
 
                 <!-- 8. URL 인코딩/디코딩 -->
                 <section class="tool-section" id="url-encode">
-                    <h2><span class="tool-icon">🔗</span> URL 인코딩</h2>
+                    <div class="tool-header">
+                        <h2><span class="tool-icon">🔗</span> URL 인코딩</h2>
+                        <button class="tool-favorite-btn" data-tool="url-encode">☆</button>
+                    </div>
                     <p class="tool-description">URL 파라미터를 인코딩하거나 디코딩합니다.</p>
 
                     <div class="error-message" id="urlError"></div>
@@ -1197,11 +1670,22 @@
                         <button class="btn btn-copy" onclick="copyOutput('urlOutput')">📋 복사</button>
                     </div>
                     <div class="output-area" id="urlOutput">결과가 여기에 표시됩니다.</div>
+                    <div class="chain-wrapper">
+                        <div class="chain-dropdown">
+                            <button class="chain-btn" onclick="Chain.toggleMenu(this)">
+                                <span>🔗</span> 다른 도구로 보내기 <span>▾</span>
+                            </button>
+                            <div class="chain-menu" data-source="urlOutput"></div>
+                        </div>
+                    </div>
                 </section>
 
                 <!-- 9. 타임스탬프 변환 -->
                 <section class="tool-section" id="timestamp">
-                    <h2><span class="tool-icon">⏰</span> 타임스탬프</h2>
+                    <div class="tool-header">
+                        <h2><span class="tool-icon">⏰</span> 타임스탬프</h2>
+                        <button class="tool-favorite-btn" data-tool="timestamp">☆</button>
+                    </div>
                     <p class="tool-description">Unix 타임스탬프와 날짜/시간을 상호 변환합니다.</p>
 
                     <div class="error-message" id="timestampError"></div>
@@ -1239,7 +1723,10 @@
 
                 <!-- 10. 날짜 계산기 -->
                 <section class="tool-section" id="date-calc">
-                    <h2><span class="tool-icon">📅</span> 날짜 계산기</h2>
+                    <div class="tool-header">
+                        <h2><span class="tool-icon">📅</span> 날짜 계산기</h2>
+                        <button class="tool-favorite-btn" data-tool="date-calc">☆</button>
+                    </div>
                     <p class="tool-description">두 날짜 사이의 일수를 계산하거나 D-day를 확인합니다.</p>
 
                     <h3 class="section-subtitle">두 날짜 사이 계산</h3>
@@ -1280,7 +1767,10 @@
 
                 <!-- 11. 비밀번호 생성기 -->
                 <section class="tool-section" id="password-gen">
-                    <h2><span class="tool-icon">🔑</span> 비밀번호 생성기</h2>
+                    <div class="tool-header">
+                        <h2><span class="tool-icon">🔑</span> 비밀번호 생성기</h2>
+                        <button class="tool-favorite-btn" data-tool="password-gen">☆</button>
+                    </div>
                     <p class="tool-description">안전한 랜덤 비밀번호를 생성합니다.</p>
 
                     <div class="options-group">
@@ -1321,7 +1811,10 @@
 
                 <!-- 12. UUID 생성기 -->
                 <section class="tool-section" id="uuid-gen">
-                    <h2><span class="tool-icon">🆔</span> UUID 생성기</h2>
+                    <div class="tool-header">
+                        <h2><span class="tool-icon">🆔</span> UUID 생성기</h2>
+                        <button class="tool-favorite-btn" data-tool="uuid-gen">☆</button>
+                    </div>
                     <p class="tool-description">고유한 UUID (Universally Unique Identifier)를 생성합니다.</p>
 
                     <div class="options-group">
@@ -1353,11 +1846,17 @@ UUID가 여기에 표시됩니다.</div>
 
             </div>
 
-            <!-- 광고 영역 - 우측 사이드바 -->
+            <!-- 광고 영역 - 우측 사이드바 (300x250) -->
             <aside class="ad-sidebar">
-                <div class="ad-placeholder">
-                    <!-- 광고 영역 - 300x250 -->
-                    광고 영역 (300 x 250)
+                <div class="ad-container ad-container-sidebar" id="adSidebar">
+                    <span class="ad-placeholder-text">AD</span>
+                    <!-- Google AdSense 삽입 시 위 span 제거 후 아래 주석 해제
+                    <ins class="adsbygoogle"
+                         style="display:inline-block;width:300px;height:250px"
+                         data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                         data-ad-slot="XXXXXXXXXX"></ins>
+                    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                    -->
                 </div>
             </aside>
         </div>
@@ -1413,6 +1912,251 @@ UUID가 여기에 표시됩니다.</div>
                     if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length);
                 }
                 return null;
+            }
+        };
+
+        /* ==================== Search Module ==================== */
+        const Search = {
+            init() {
+                const searchInput = document.getElementById('toolSearch');
+                searchInput.addEventListener('input', (e) => this.filter(e.target.value));
+            },
+
+            filter(query) {
+                const menuItems = document.querySelectorAll('#toolNav .menu-item:not(#favoritesContainer .menu-item)');
+                const categories = document.querySelectorAll('#toolNav .menu-category:not(#favoritesSection .menu-category)');
+                const q = query.toLowerCase().trim();
+
+                if (!q) {
+                    menuItems.forEach(item => {
+                        item.classList.remove('hidden', 'highlight');
+                    });
+                    categories.forEach(cat => cat.classList.remove('hidden'));
+                    return;
+                }
+
+                const categoryVisibility = {};
+
+                menuItems.forEach(item => {
+                    const text = item.querySelector('.menu-text')?.textContent.toLowerCase() || '';
+                    const keywords = item.dataset.keywords?.toLowerCase() || '';
+                    const matches = text.includes(q) || keywords.includes(q);
+
+                    item.classList.toggle('hidden', !matches);
+                    item.classList.toggle('highlight', matches);
+
+                    if (matches) {
+                        const section = item.dataset.section;
+                        const category = this.getCategoryForSection(section);
+                        if (category) categoryVisibility[category] = true;
+                    }
+                });
+
+                categories.forEach(cat => {
+                    const categoryName = cat.dataset.category;
+                    cat.classList.toggle('hidden', !categoryVisibility[categoryName]);
+                });
+            },
+
+            getCategoryForSection(section) {
+                const mapping = {
+                    'char-counter': 'text-analysis',
+                    'case-converter': 'text-transform',
+                    'letter-case': 'text-transform',
+                    'whitespace': 'text-transform',
+                    'duplicate-lines': 'text-transform',
+                    'json-formatter': 'dev-tools',
+                    'base64': 'dev-tools',
+                    'url-encode': 'dev-tools',
+                    'timestamp': 'dev-tools',
+                    'date-calc': 'calc-gen',
+                    'password-gen': 'calc-gen',
+                    'uuid-gen': 'calc-gen'
+                };
+                return mapping[section];
+            }
+        };
+
+        /* ==================== Favorites Module ==================== */
+        const Favorites = {
+            storageKey: 'toolkit_favorites',
+            tools: {},
+
+            init() {
+                this.tools = {
+                    'char-counter': { name: '글자수 / 바이트수 계산기', icon: '📊' },
+                    'case-converter': { name: '케이스 변환', icon: '🔄' },
+                    'letter-case': { name: '대소문자 변환', icon: '🔠' },
+                    'whitespace': { name: '줄바꿈 / 공백 정리', icon: '📄' },
+                    'duplicate-lines': { name: '중복 줄 제거', icon: '📑' },
+                    'json-formatter': { name: 'JSON Formatter', icon: '{ }' },
+                    'base64': { name: 'Base64 인코딩', icon: '🔐' },
+                    'url-encode': { name: 'URL 인코딩', icon: '🔗' },
+                    'timestamp': { name: '타임스탬프 변환', icon: '⏰' },
+                    'date-calc': { name: '날짜 계산기', icon: '📅' },
+                    'password-gen': { name: '비밀번호 생성기', icon: '🔑' },
+                    'uuid-gen': { name: 'UUID 생성기', icon: '🆔' }
+                };
+
+                this.loadFavorites();
+                this.bindEvents();
+                this.render();
+            },
+
+            loadFavorites() {
+                const saved = localStorage.getItem(this.storageKey);
+                this.favorites = saved ? JSON.parse(saved) : [];
+            },
+
+            saveFavorites() {
+                localStorage.setItem(this.storageKey, JSON.stringify(this.favorites));
+            },
+
+            bindEvents() {
+                document.querySelectorAll('.favorite-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        this.toggle(btn.dataset.tool);
+                    });
+                });
+
+                document.querySelectorAll('.tool-favorite-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        this.toggle(btn.dataset.tool);
+                    });
+                });
+            },
+
+            toggle(toolId) {
+                const index = this.favorites.indexOf(toolId);
+                if (index === -1) {
+                    this.favorites.push(toolId);
+                    Utils.showToast('즐겨찾기에 추가되었습니다!');
+                } else {
+                    this.favorites.splice(index, 1);
+                    Utils.showToast('즐겨찾기에서 제거되었습니다.');
+                }
+                this.saveFavorites();
+                this.render();
+            },
+
+            render() {
+                const section = document.getElementById('favoritesSection');
+                const container = document.getElementById('favoritesContainer');
+
+                section.classList.toggle('has-items', this.favorites.length > 0);
+
+                document.querySelectorAll('.favorite-btn').forEach(btn => {
+                    const isActive = this.favorites.includes(btn.dataset.tool);
+                    btn.textContent = isActive ? '★' : '☆';
+                    btn.classList.toggle('active', isActive);
+                });
+
+                document.querySelectorAll('.tool-favorite-btn').forEach(btn => {
+                    const isActive = this.favorites.includes(btn.dataset.tool);
+                    btn.textContent = isActive ? '★ 즐겨찾기' : '☆ 즐겨찾기';
+                    btn.classList.toggle('active', isActive);
+                });
+
+                container.innerHTML = this.favorites.map(toolId => {
+                    const tool = this.tools[toolId];
+                    if (!tool) return '';
+                    return `
+                        <a class="menu-item" data-section="${toolId}">
+                            <span class="menu-icon">${tool.icon}</span>
+                            <span class="menu-text">${tool.name}</span>
+                        </a>
+                    `;
+                }).join('');
+
+                container.querySelectorAll('.menu-item').forEach(item => {
+                    item.addEventListener('click', () => {
+                        const sectionId = item.dataset.section;
+                        const originalItem = document.querySelector(`#toolNav .menu-item[data-section="${sectionId}"]:not(#favoritesContainer .menu-item)`);
+                        if (originalItem) {
+                            Navigation.navigateTo(sectionId, originalItem);
+                        }
+                    });
+                });
+            }
+        };
+
+        /* ==================== Chain Module ==================== */
+        const Chain = {
+            targetTools: [
+                { id: 'case-converter', input: 'caseInput', name: '케이스 변환', icon: '🔄' },
+                { id: 'letter-case', input: 'letterCaseInput', name: '대소문자 변환', icon: '🔠' },
+                { id: 'whitespace', input: 'whitespaceInput', name: '공백 정리', icon: '📄' },
+                { id: 'duplicate-lines', input: 'duplicateInput', name: '중복 줄 제거', icon: '📑' },
+                { id: 'json-formatter', input: 'jsonInput', name: 'JSON Formatter', icon: '{ }' },
+                { id: 'base64', input: 'base64Input', name: 'Base64 인코딩', icon: '🔐' },
+                { id: 'url-encode', input: 'urlInput', name: 'URL 인코딩', icon: '🔗' }
+            ],
+
+            init() {
+                this.populateMenus();
+                document.addEventListener('click', (e) => {
+                    if (!e.target.closest('.chain-dropdown')) {
+                        this.closeAllMenus();
+                    }
+                });
+            },
+
+            populateMenus() {
+                document.querySelectorAll('.chain-menu').forEach(menu => {
+                    const sourceId = menu.dataset.source;
+                    menu.innerHTML = this.targetTools.map(tool => `
+                        <div class="chain-menu-item" data-target="${tool.id}" data-input="${tool.input}" data-source="${sourceId}">
+                            <span class="chain-icon">${tool.icon}</span>
+                            <span>${tool.name}</span>
+                        </div>
+                    `).join('');
+
+                    menu.querySelectorAll('.chain-menu-item').forEach(item => {
+                        item.addEventListener('click', () => this.sendTo(item));
+                    });
+                });
+            },
+
+            toggleMenu(btn) {
+                const menu = btn.nextElementSibling;
+                const isOpen = menu.classList.contains('show');
+                this.closeAllMenus();
+                if (!isOpen) {
+                    menu.classList.add('show');
+                }
+            },
+
+            closeAllMenus() {
+                document.querySelectorAll('.chain-menu.show').forEach(m => m.classList.remove('show'));
+            },
+
+            sendTo(item) {
+                const sourceId = item.dataset.source;
+                const targetId = item.dataset.target;
+                const inputId = item.dataset.input;
+
+                const sourceEl = document.getElementById(sourceId);
+                const text = sourceEl?.textContent || '';
+
+                if (!text || text.includes('여기에 표시됩니다') || text.includes('결과가 여기에')) {
+                    Utils.showToast('전송할 내용이 없습니다.', true);
+                    this.closeAllMenus();
+                    return;
+                }
+
+                const inputEl = document.getElementById(inputId);
+                if (inputEl) {
+                    inputEl.value = text;
+                }
+
+                const menuItem = document.querySelector(`#toolNav .menu-item[data-section="${targetId}"]`);
+                if (menuItem) {
+                    Navigation.navigateTo(targetId, menuItem);
+                }
+
+                this.closeAllMenus();
+                Utils.showToast('결과가 전송되었습니다!');
             }
         };
 
@@ -1972,6 +2716,9 @@ UUID가 여기에 표시됩니다.</div>
             Theme.init();
             Navigation.init();
             CharCounter.init();
+            Search.init();
+            Favorites.init();
+            Chain.init();
 
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('dateStart').value = today;
