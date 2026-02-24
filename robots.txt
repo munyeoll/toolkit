@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://munyeoll.github.io/toolkit/sitemap.xml
+Sitemap: https://toolkit-mu-seven.vercel.app/sitemap.xml
