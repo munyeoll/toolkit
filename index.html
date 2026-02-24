@@ -26,6 +26,9 @@
     <link rel="canonical" href="https://munyeoll.github.io/toolkit/">
     <meta name="theme-color" content="#6366f1">
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -417,7 +420,7 @@
 
         textarea, input[type="text"], input[type="number"], input[type="date"], input[type="datetime-local"] {
             width: 100%;
-            padding: 16px;
+            padding: 16px 16px 16px 36px;
             background: var(--bg-primary);
             border: 1px solid var(--border);
             border-radius: var(--radius-md);
@@ -855,13 +858,6 @@
             border-color: var(--accent);
         }
 
-        /* ==================== Password Output ==================== */
-        .password-display {
-            font-size: 1.1rem;
-            letter-spacing: 2px;
-            color: var(--text-primary);
-        }
-
         /* ==================== Scrollbar ==================== */
         ::-webkit-scrollbar {
             width: 8px;
@@ -903,7 +899,7 @@
 
         .search-input {
             width: 100%;
-            padding: 12px 14px 12px 40px;
+            padding: 12px 14px 12px 44px;
             background: var(--bg-primary);
             border: 1px solid var(--border);
             border-radius: var(--radius-md);
@@ -935,73 +931,281 @@
             display: none;
         }
 
-        /* ==================== Favorites ==================== */
-        .favorites-section {
-            display: none;
+        /* ==================== Text Diff ==================== */
+        .diff-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
         }
 
-        .favorites-section.has-items {
-            display: block;
-        }
-
-        .menu-item .favorite-btn {
-            margin-left: auto;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-            opacity: 0.3;
-            transition: all 0.2s ease;
-            padding: 4px;
-        }
-
-        .menu-item:hover .favorite-btn {
-            opacity: 0.7;
-        }
-
-        .menu-item .favorite-btn:hover {
-            opacity: 1;
-            transform: scale(1.2);
-        }
-
-        .menu-item .favorite-btn.active {
-            opacity: 1;
-        }
-
-        .tool-header {
+        .diff-input-group {
             display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 8px;
+            flex-direction: column;
+            gap: 8px;
         }
 
-        .tool-header h2 {
-            margin-bottom: 0;
+        .diff-input-group textarea {
+            min-height: 150px;
         }
 
-        .tool-favorite-btn {
-            background: none;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            padding: 8px 12px;
-            cursor: pointer;
-            font-size: 1.1rem;
-            transition: all 0.2s ease;
+        .diff-stats {
             display: flex;
-            align-items: center;
-            gap: 6px;
+            gap: 16px;
+            margin-bottom: 16px;
+            padding: 12px 16px;
+            background: var(--bg-tertiary);
+            border-radius: var(--radius-md);
+        }
+
+        .diff-stats .stat-item {
+            font-size: 0.875rem;
+        }
+
+        .diff-stats .added { color: var(--success); }
+        .diff-stats .removed { color: var(--error); }
+        .diff-stats .unchanged { color: var(--text-muted); }
+
+        .diff-output .diff-line {
+            padding: 2px 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+        }
+
+        .diff-output .diff-added {
+            background: rgba(34, 197, 94, 0.2);
+            border-left: 3px solid var(--success);
+        }
+
+        .diff-output .diff-removed {
+            background: rgba(239, 68, 68, 0.2);
+            border-left: 3px solid var(--error);
+            text-decoration: line-through;
+        }
+
+        .diff-output .diff-unchanged {
             color: var(--text-muted);
         }
 
-        .tool-favorite-btn:hover {
-            border-color: var(--warning);
-            background: rgba(245, 158, 11, 0.1);
+        /* ==================== Regex Tester ==================== */
+        .regex-highlight {
+            white-space: pre-wrap;
+            word-break: break-all;
         }
 
-        .tool-favorite-btn.active {
-            border-color: var(--warning);
+        .regex-highlight mark {
+            background: rgba(99, 102, 241, 0.3);
+            color: var(--text-primary);
+            padding: 1px 2px;
+            border-radius: 2px;
+        }
+
+        .regex-matches {
+            margin-top: 16px;
+        }
+
+        .regex-matches .match-count {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .regex-matches .match-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .regex-matches .match-item {
+            background: var(--bg-tertiary);
+            padding: 4px 10px;
+            border-radius: var(--radius-sm);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+        }
+
+        .regex-error {
+            color: var(--error);
+            font-size: 0.875rem;
+            margin-top: 8px;
+        }
+
+        /* ==================== Color Converter ==================== */
+        .color-preview-container {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .color-preview {
+            width: 100px;
+            height: 100px;
+            border-radius: var(--radius-md);
+            background: #6366f1;
+            border: 2px solid var(--border);
+            box-shadow: var(--shadow-sm);
+        }
+
+        #colorPicker {
+            width: 50px;
+            height: 50px;
+            padding: 0;
+            border: none;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+        }
+
+        .color-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .color-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .color-input-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .color-input-row input {
+            flex: 1;
+            padding: 12px 14px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .btn-copy-sm {
+            padding: 8px 12px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-copy-sm:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        /* ==================== JWT Decoder ==================== */
+        .tool-warning {
             background: rgba(245, 158, 11, 0.15);
+            border: 1px solid var(--warning);
             color: var(--warning);
+            padding: 10px 14px;
+            border-radius: var(--radius-md);
+            font-size: 0.85rem;
+            margin-bottom: 16px;
+        }
+
+        .jwt-status {
+            margin-bottom: 16px;
+        }
+
+        .jwt-status .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .jwt-status .badge-valid {
+            background: rgba(34, 197, 94, 0.15);
+            color: var(--success);
+        }
+
+        .jwt-status .badge-expired {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--error);
+        }
+
+        .jwt-sections {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .jwt-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .jwt-section-header h3 {
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        .jwt-output {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            min-height: 60px;
+        }
+
+        /* ==================== CSV JSON Converter ==================== */
+        .mode-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .mode-tab {
+            flex: 1;
+            padding: 12px 20px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .mode-tab:hover {
+            background: var(--bg-card-hover);
+        }
+
+        .mode-tab.active {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+        }
+
+        .csv-json-mode {
+            display: none;
+        }
+
+        .csv-json-mode.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .diff-container {
+                grid-template-columns: 1fr;
+            }
+
+            .color-preview-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .color-preview {
+                width: 80px;
+                height: 80px;
+            }
         }
 
         /* ==================== Chain Feature ==================== */
@@ -1168,15 +1372,6 @@
                 font-size: 1rem;
             }
 
-            .tool-header {
-                flex-wrap: wrap;
-            }
-
-            .tool-favorite-btn {
-                padding: 6px 10px;
-                font-size: 0.95rem;
-            }
-
             textarea {
                 min-height: 120px;
                 font-size: 0.85rem;
@@ -1264,82 +1459,86 @@
         <div class="search-box">
             <div class="search-input-wrapper">
                 <span class="search-icon">🔍</span>
-                <input type="text" class="search-input" id="toolSearch" placeholder="도구 검색...">
+                <input type="text" class="search-input" id="toolSearch" placeholder="도구 검색">
             </div>
         </div>
         <nav id="toolNav">
-            <!-- Favorites Section -->
-            <div class="favorites-section" id="favoritesSection">
-                <div class="menu-category">⭐ 즐겨찾기</div>
-                <div id="favoritesContainer"></div>
-            </div>
-
             <div class="menu-category" data-category="text-analysis">텍스트 분석</div>
             <a class="menu-item active" data-section="char-counter" data-keywords="글자수 바이트 계산 문자 카운트 길이">
                 <span class="menu-icon">📊</span>
                 <span class="menu-text">글자수 / 바이트수 계산기</span>
-                <button class="favorite-btn" data-tool="char-counter">☆</button>
+            </a>
+            <a class="menu-item" data-section="text-diff" data-keywords="diff 비교 차이 compare 텍스트">
+                <span class="menu-icon">📊</span>
+                <span class="menu-text">텍스트 Diff</span>
             </a>
 
             <div class="menu-category" data-category="text-transform">텍스트 변환</div>
             <a class="menu-item" data-section="case-converter" data-keywords="카멜 스네이크 파스칼 케밥 케이스 변환 camel snake pascal kebab">
                 <span class="menu-icon">🔄</span>
                 <span class="menu-text">케이스 변환</span>
-                <button class="favorite-btn" data-tool="case-converter">☆</button>
             </a>
             <a class="menu-item" data-section="letter-case" data-keywords="대문자 소문자 변환 uppercase lowercase title">
                 <span class="menu-icon">🔠</span>
                 <span class="menu-text">대소문자 변환</span>
-                <button class="favorite-btn" data-tool="letter-case">☆</button>
             </a>
             <a class="menu-item" data-section="whitespace" data-keywords="공백 줄바꿈 정리 trim space 빈줄">
                 <span class="menu-icon">📄</span>
                 <span class="menu-text">줄바꿈 / 공백 정리</span>
-                <button class="favorite-btn" data-tool="whitespace">☆</button>
             </a>
             <a class="menu-item" data-section="duplicate-lines" data-keywords="중복 제거 줄 라인 unique 유니크">
                 <span class="menu-icon">📑</span>
                 <span class="menu-text">중복 줄 제거</span>
-                <button class="favorite-btn" data-tool="duplicate-lines">☆</button>
             </a>
 
             <div class="menu-category" data-category="dev-tools">개발자 도구</div>
             <a class="menu-item" data-section="json-formatter" data-keywords="json 포맷 정렬 formatter 압축 minify beautify">
                 <span class="menu-icon">{ }</span>
                 <span class="menu-text">JSON Formatter</span>
-                <button class="favorite-btn" data-tool="json-formatter">☆</button>
             </a>
             <a class="menu-item" data-section="base64" data-keywords="base64 인코딩 디코딩 encode decode 암호화">
                 <span class="menu-icon">🔐</span>
                 <span class="menu-text">Base64 인코딩</span>
-                <button class="favorite-btn" data-tool="base64">☆</button>
             </a>
             <a class="menu-item" data-section="url-encode" data-keywords="url 인코딩 디코딩 encode decode 주소 uri">
                 <span class="menu-icon">🔗</span>
                 <span class="menu-text">URL 인코딩</span>
-                <button class="favorite-btn" data-tool="url-encode">☆</button>
             </a>
             <a class="menu-item" data-section="timestamp" data-keywords="타임스탬프 unix 시간 날짜 변환 epoch">
                 <span class="menu-icon">⏰</span>
                 <span class="menu-text">타임스탬프 변환</span>
-                <button class="favorite-btn" data-tool="timestamp">☆</button>
+            </a>
+            <a class="menu-item" data-section="regex-tester" data-keywords="정규식 regex 정규표현식 패턴 매칭">
+                <span class="menu-icon">🔍</span>
+                <span class="menu-text">정규식 테스터</span>
+            </a>
+            <a class="menu-item" data-section="color-converter" data-keywords="색상 컬러 hex rgb hsl 변환">
+                <span class="menu-icon">🎨</span>
+                <span class="menu-text">색상 변환기</span>
+            </a>
+            <a class="menu-item" data-section="jwt-decoder" data-keywords="jwt 토큰 디코더 json web token">
+                <span class="menu-icon">🔑</span>
+                <span class="menu-text">JWT 디코더</span>
+            </a>
+
+            <div class="menu-category" data-category="data-processing">데이터 처리</div>
+            <a class="menu-item" data-section="csv-json" data-keywords="csv json 변환 데이터 테이블">
+                <span class="menu-icon">🔄</span>
+                <span class="menu-text">CSV ↔ JSON</span>
             </a>
 
             <div class="menu-category" data-category="calc-gen">계산 / 생성</div>
             <a class="menu-item" data-section="date-calc" data-keywords="날짜 계산 d-day 디데이 일수">
                 <span class="menu-icon">📅</span>
                 <span class="menu-text">날짜 계산기</span>
-                <button class="favorite-btn" data-tool="date-calc">☆</button>
             </a>
             <a class="menu-item" data-section="password-gen" data-keywords="비밀번호 생성 password 랜덤 random">
                 <span class="menu-icon">🔑</span>
                 <span class="menu-text">비밀번호 생성기</span>
-                <button class="favorite-btn" data-tool="password-gen">☆</button>
             </a>
             <a class="menu-item" data-section="uuid-gen" data-keywords="uuid 생성 고유 식별자 guid">
                 <span class="menu-icon">🆔</span>
                 <span class="menu-text">UUID 생성기</span>
-                <button class="favorite-btn" data-tool="uuid-gen">☆</button>
             </a>
         </nav>
     </aside>
@@ -1373,15 +1572,12 @@
 
                 <!-- 1. 글자수 / 바이트수 계산기 -->
                 <section class="tool-section active" id="char-counter">
-                    <div class="tool-header">
-                        <h2><span class="tool-icon">📊</span> 글자수 계산기</h2>
-                        <button class="tool-favorite-btn" data-tool="char-counter">☆</button>
-                    </div>
+                    <h2><span class="tool-icon">📊</span> 글자수 계산기</h2>
                     <p class="tool-description">입력한 텍스트의 글자수와 바이트수를 실시간으로 계산합니다.</p>
 
                     <div class="input-group">
                         <label>텍스트 입력</label>
-                        <textarea id="charCounterInput" placeholder="여기에 텍스트를 입력하세요..."></textarea>
+                        <textarea id="charCounterInput" placeholder="여기에 텍스트를 입력하세요."></textarea>
                     </div>
 
                     <div class="stats-grid">
@@ -1410,10 +1606,7 @@
 
                 <!-- 2. 케이스 변환 (카멜케이스 ↔ 스네이크케이스) -->
                 <section class="tool-section" id="case-converter">
-                    <div class="tool-header">
-                        <h2><span class="tool-icon">🔄</span> 케이스 변환</h2>
-                        <button class="tool-favorite-btn" data-tool="case-converter">☆</button>
-                    </div>
+                    <h2><span class="tool-icon">🔄</span> 케이스 변환</h2>
                     <p class="tool-description">카멜케이스, 스네이크케이스, 파스칼케이스, 케밥케이스를 상호 변환합니다.</p>
 
                     <div class="input-group">
@@ -1446,15 +1639,12 @@
 
                 <!-- 3. 대소문자 변환 -->
                 <section class="tool-section" id="letter-case">
-                    <div class="tool-header">
-                        <h2><span class="tool-icon">🔠</span> 대소문자 변환</h2>
-                        <button class="tool-favorite-btn" data-tool="letter-case">☆</button>
-                    </div>
+                    <h2><span class="tool-icon">🔠</span> 대소문자 변환</h2>
                     <p class="tool-description">텍스트의 대소문자를 다양한 형식으로 변환합니다.</p>
 
                     <div class="input-group">
                         <label>텍스트 입력</label>
-                        <textarea id="letterCaseInput" placeholder="변환할 텍스트를 입력하세요..."></textarea>
+                        <textarea id="letterCaseInput" placeholder="변환할 텍스트를 입력하세요."></textarea>
                     </div>
 
                     <div class="btn-group">
@@ -1482,15 +1672,12 @@
 
                 <!-- 4. 줄바꿈 / 공백 정리 -->
                 <section class="tool-section" id="whitespace">
-                    <div class="tool-header">
-                        <h2><span class="tool-icon">📄</span> 공백 정리</h2>
-                        <button class="tool-favorite-btn" data-tool="whitespace">☆</button>
-                    </div>
+                    <h2><span class="tool-icon">📄</span> 공백 정리</h2>
                     <p class="tool-description">연속된 공백이나 줄바꿈을 깔끔하게 정리합니다.</p>
 
                     <div class="input-group">
                         <label>텍스트 입력</label>
-                        <textarea id="whitespaceInput" placeholder="정리할 텍스트를 입력하세요..."></textarea>
+                        <textarea id="whitespaceInput" placeholder="정리할 텍스트를 입력하세요."></textarea>
                     </div>
 
                     <div class="btn-group">
@@ -1518,15 +1705,12 @@
 
                 <!-- 5. 중복 줄 제거 -->
                 <section class="tool-section" id="duplicate-lines">
-                    <div class="tool-header">
-                        <h2><span class="tool-icon">📑</span> 중복 줄 제거</h2>
-                        <button class="tool-favorite-btn" data-tool="duplicate-lines">☆</button>
-                    </div>
+                    <h2><span class="tool-icon">📑</span> 중복 줄 제거</h2>
                     <p class="tool-description">중복된 줄을 제거하고 고유한 줄만 남깁니다.</p>
 
                     <div class="input-group">
                         <label>텍스트 입력 (줄 단위)</label>
-                        <textarea id="duplicateInput" placeholder="각 줄에 텍스트를 입력하세요..."></textarea>
+                        <textarea id="duplicateInput" placeholder="각 줄에 텍스트를 입력하세요."></textarea>
                     </div>
 
                     <div class="options-group">
@@ -1562,10 +1746,7 @@
 
                 <!-- 6. JSON Formatter -->
                 <section class="tool-section" id="json-formatter">
-                    <div class="tool-header">
-                        <h2><span class="tool-icon">{ }</span> JSON Formatter</h2>
-                        <button class="tool-favorite-btn" data-tool="json-formatter">☆</button>
-                    </div>
+                    <h2><span class="tool-icon">{ }</span> JSON Formatter</h2>
                     <p class="tool-description">JSON을 보기 좋게 정렬하고 유효성을 검사합니다.</p>
 
                     <div class="error-message" id="jsonError"></div>
@@ -1609,17 +1790,14 @@
 
                 <!-- 7. Base64 인코딩/디코딩 -->
                 <section class="tool-section" id="base64">
-                    <div class="tool-header">
-                        <h2><span class="tool-icon">🔐</span> Base64</h2>
-                        <button class="tool-favorite-btn" data-tool="base64">☆</button>
-                    </div>
+                    <h2><span class="tool-icon">🔐</span> Base64</h2>
                     <p class="tool-description">텍스트를 Base64로 인코딩하거나 디코딩합니다.</p>
 
                     <div class="error-message" id="base64Error"></div>
 
                     <div class="input-group">
                         <label>텍스트 입력</label>
-                        <textarea id="base64Input" placeholder="인코딩하거나 디코딩할 텍스트를 입력하세요..."></textarea>
+                        <textarea id="base64Input" placeholder="인코딩하거나 디코딩할 텍스트를 입력하세요."></textarea>
                     </div>
 
                     <div class="btn-group">
@@ -1645,17 +1823,14 @@
 
                 <!-- 8. URL 인코딩/디코딩 -->
                 <section class="tool-section" id="url-encode">
-                    <div class="tool-header">
-                        <h2><span class="tool-icon">🔗</span> URL 인코딩</h2>
-                        <button class="tool-favorite-btn" data-tool="url-encode">☆</button>
-                    </div>
+                    <h2><span class="tool-icon">🔗</span> URL 인코딩</h2>
                     <p class="tool-description">URL 파라미터를 인코딩하거나 디코딩합니다.</p>
 
                     <div class="error-message" id="urlError"></div>
 
                     <div class="input-group">
                         <label>텍스트 입력</label>
-                        <textarea id="urlInput" placeholder="인코딩하거나 디코딩할 텍스트를 입력하세요..."></textarea>
+                        <textarea id="urlInput" placeholder="인코딩하거나 디코딩할 텍스트를 입력하세요."></textarea>
                     </div>
 
                     <div class="btn-group">
@@ -1682,10 +1857,7 @@
 
                 <!-- 9. 타임스탬프 변환 -->
                 <section class="tool-section" id="timestamp">
-                    <div class="tool-header">
-                        <h2><span class="tool-icon">⏰</span> 타임스탬프</h2>
-                        <button class="tool-favorite-btn" data-tool="timestamp">☆</button>
-                    </div>
+                    <h2><span class="tool-icon">⏰</span> 타임스탬프</h2>
                     <p class="tool-description">Unix 타임스탬프와 날짜/시간을 상호 변환합니다.</p>
 
                     <div class="error-message" id="timestampError"></div>
@@ -1723,10 +1895,7 @@
 
                 <!-- 10. 날짜 계산기 -->
                 <section class="tool-section" id="date-calc">
-                    <div class="tool-header">
-                        <h2><span class="tool-icon">📅</span> 날짜 계산기</h2>
-                        <button class="tool-favorite-btn" data-tool="date-calc">☆</button>
-                    </div>
+                    <h2><span class="tool-icon">📅</span> 날짜 계산기</h2>
                     <p class="tool-description">두 날짜 사이의 일수를 계산하거나 D-day를 확인합니다.</p>
 
                     <h3 class="section-subtitle">두 날짜 사이 계산</h3>
@@ -1760,17 +1929,12 @@
                         <button class="btn btn-primary" onclick="calculateDday()">D-Day 계산</button>
                     </div>
 
-                    <div class="output-area" id="ddayOutput" style="text-align: center; font-size: 2rem; font-weight: 700;">
-                        D-Day 결과가 여기에 표시됩니다.
-                    </div>
+                    <div class="output-area" id="ddayOutput">D-Day 결과가 여기에 표시됩니다.</div>
                 </section>
 
                 <!-- 11. 비밀번호 생성기 -->
                 <section class="tool-section" id="password-gen">
-                    <div class="tool-header">
-                        <h2><span class="tool-icon">🔑</span> 비밀번호 생성기</h2>
-                        <button class="tool-favorite-btn" data-tool="password-gen">☆</button>
-                    </div>
+                    <h2><span class="tool-icon">🔑</span> 비밀번호 생성기</h2>
                     <p class="tool-description">안전한 랜덤 비밀번호를 생성합니다.</p>
 
                     <div class="options-group">
@@ -1805,16 +1969,12 @@
                         <h3>생성된 비밀번호</h3>
                         <button class="btn btn-copy" onclick="copyOutput('passwordOutput')">📋 복사</button>
                     </div>
-                    <div class="output-area password-display" id="passwordOutput">
-생성된 비밀번호가 여기에 표시됩니다.</div>
+                    <div class="output-area" id="passwordOutput">생성된 비밀번호가 여기에 표시됩니다.</div>
                 </section>
 
                 <!-- 12. UUID 생성기 -->
                 <section class="tool-section" id="uuid-gen">
-                    <div class="tool-header">
-                        <h2><span class="tool-icon">🆔</span> UUID 생성기</h2>
-                        <button class="tool-favorite-btn" data-tool="uuid-gen">☆</button>
-                    </div>
+                    <h2><span class="tool-icon">🆔</span> UUID 생성기</h2>
                     <p class="tool-description">고유한 UUID (Universally Unique Identifier)를 생성합니다.</p>
 
                     <div class="options-group">
@@ -1842,6 +2002,246 @@
                     </div>
                     <div class="output-area" id="uuidOutput">
 UUID가 여기에 표시됩니다.</div>
+                </section>
+
+                <!-- 13. 텍스트 Diff -->
+                <section class="tool-section" id="text-diff">
+                    <h2><span class="tool-icon">📊</span> 텍스트 Diff</h2>
+                    <p class="tool-description">두 텍스트의 차이점을 비교합니다.</p>
+
+                    <div class="diff-container">
+                        <div class="diff-input-group">
+                            <label>원본 텍스트</label>
+                            <textarea id="diffOriginal" placeholder="원본 텍스트를 입력하세요."></textarea>
+                        </div>
+                        <div class="diff-input-group">
+                            <label>수정본 텍스트</label>
+                            <textarea id="diffModified" placeholder="수정된 텍스트를 입력하세요."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="compareDiff()">비교하기</button>
+                        <button class="btn" onclick="clearDiff()">초기화</button>
+                    </div>
+
+                    <div class="diff-stats" id="diffStats" style="display: none;">
+                        <span class="stat-item added">추가: <strong id="diffAdded">0</strong>줄</span>
+                        <span class="stat-item removed">삭제: <strong id="diffRemoved">0</strong>줄</span>
+                        <span class="stat-item unchanged">유지: <strong id="diffUnchanged">0</strong>줄</span>
+                    </div>
+
+                    <div class="output-header" id="diffOutputHeader" style="display: none;">
+                        <h3>비교 결과</h3>
+                        <button class="btn btn-copy" onclick="copyOutput('diffOutput')">📋 복사</button>
+                    </div>
+                    <div class="output-area diff-output" id="diffOutput" style="display: none;"></div>
+
+                    <div class="chain-wrapper" id="diffChain" style="display: none;">
+                        <span class="chain-label">다른 도구로 보내기:</span>
+                        <div class="chain-dropdown">
+                            <button class="chain-btn" onclick="Chain.toggleMenu(this)">도구 선택 ▾</button>
+                            <div class="chain-menu"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 14. 정규식 테스터 -->
+                <section class="tool-section" id="regex-tester">
+                    <h2><span class="tool-icon">🔍</span> 정규식 테스터</h2>
+                    <p class="tool-description">정규표현식을 테스트하고 매칭 결과를 확인합니다.</p>
+
+                    <div class="input-group">
+                        <label>정규식 패턴</label>
+                        <input type="text" id="regexPattern" placeholder="예: [a-z]+" oninput="testRegex()">
+                    </div>
+
+                    <div class="options-group">
+                        <div class="option-item">
+                            <input type="checkbox" id="regexFlagG" checked onchange="testRegex()">
+                            <label for="regexFlagG">g (전체 매칭)</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="checkbox" id="regexFlagI" onchange="testRegex()">
+                            <label for="regexFlagI">i (대소문자 무시)</label>
+                        </div>
+                        <div class="option-item">
+                            <input type="checkbox" id="regexFlagM" onchange="testRegex()">
+                            <label for="regexFlagM">m (멀티라인)</label>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>테스트 문자열</label>
+                        <textarea id="regexTestString" placeholder="테스트할 문자열을 입력하세요." oninput="testRegex()"></textarea>
+                    </div>
+
+                    <div class="output-header">
+                        <h3>매칭 결과</h3>
+                        <button class="btn btn-copy" onclick="copyRegexMatches()">📋 결과 복사</button>
+                    </div>
+                    <div class="output-area regex-highlight" id="regexHighlight">매칭 결과가 여기에 표시됩니다.</div>
+
+                    <div class="regex-matches" id="regexMatches"></div>
+                </section>
+
+                <!-- 15. 색상 변환기 -->
+                <section class="tool-section" id="color-converter">
+                    <h2><span class="tool-icon">🎨</span> 색상 변환기</h2>
+                    <p class="tool-description">HEX, RGB, HSL 형식 간 색상을 변환합니다.</p>
+
+                    <div class="color-preview-container">
+                        <div class="color-preview" id="colorPreview"></div>
+                        <input type="color" id="colorPicker" value="#6366f1" onchange="updateFromPicker()">
+                    </div>
+
+                    <div class="color-inputs">
+                        <div class="color-input-group">
+                            <label>HEX</label>
+                            <div class="color-input-row">
+                                <input type="text" id="colorHex" placeholder="#6366f1" oninput="updateFromHex()">
+                                <button class="btn btn-copy-sm" onclick="copyColorValue('colorHex')">📋</button>
+                            </div>
+                        </div>
+                        <div class="color-input-group">
+                            <label>RGB</label>
+                            <div class="color-input-row">
+                                <input type="text" id="colorRgb" placeholder="rgb(99, 102, 241)" oninput="updateFromRgb()">
+                                <button class="btn btn-copy-sm" onclick="copyColorValue('colorRgb')">📋</button>
+                            </div>
+                        </div>
+                        <div class="color-input-group">
+                            <label>HSL</label>
+                            <div class="color-input-row">
+                                <input type="text" id="colorHsl" placeholder="hsl(239, 84%, 67%)" oninput="updateFromHsl()">
+                                <button class="btn btn-copy-sm" onclick="copyColorValue('colorHsl')">📋</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 16. JWT 디코더 -->
+                <section class="tool-section" id="jwt-decoder">
+                    <h2><span class="tool-icon">🔑</span> JWT 디코더</h2>
+                    <p class="tool-description">JWT 토큰을 디코딩하여 Header, Payload, Signature를 확인합니다.</p>
+                    <p class="tool-warning">⚠️ 이 디코더는 클라이언트에서만 동작하며 서명 검증은 하지 않습니다.</p>
+
+                    <div class="input-group">
+                        <label>JWT 토큰</label>
+                        <textarea id="jwtInput" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." oninput="decodeJWT()"></textarea>
+                    </div>
+
+                    <div class="jwt-status" id="jwtStatus"></div>
+
+                    <div class="jwt-sections">
+                        <div class="jwt-section">
+                            <div class="jwt-section-header">
+                                <h3>Header</h3>
+                                <button class="btn btn-copy-sm" onclick="copyJwtSection('jwtHeader')">📋</button>
+                            </div>
+                            <div class="output-area jwt-output" id="jwtHeader">Header가 여기에 표시됩니다.</div>
+                        </div>
+                        <div class="jwt-section">
+                            <div class="jwt-section-header">
+                                <h3>Payload</h3>
+                                <button class="btn btn-copy-sm" onclick="copyJwtSection('jwtPayload')">📋</button>
+                            </div>
+                            <div class="output-area jwt-output" id="jwtPayload">Payload가 여기에 표시됩니다.</div>
+                        </div>
+                        <div class="jwt-section">
+                            <div class="jwt-section-header">
+                                <h3>Signature</h3>
+                                <button class="btn btn-copy-sm" onclick="copyJwtSection('jwtSignature')">📋</button>
+                            </div>
+                            <div class="output-area jwt-output" id="jwtSignature">Signature가 여기에 표시됩니다.</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 17. CSV ↔ JSON 변환기 -->
+                <section class="tool-section" id="csv-json">
+                    <h2><span class="tool-icon">🔄</span> CSV ↔ JSON 변환기</h2>
+                    <p class="tool-description">CSV와 JSON 형식 간 데이터를 변환합니다.</p>
+
+                    <div class="mode-tabs">
+                        <button class="mode-tab active" data-mode="csv-to-json" onclick="switchCsvJsonMode('csv-to-json')">CSV → JSON</button>
+                        <button class="mode-tab" data-mode="json-to-csv" onclick="switchCsvJsonMode('json-to-csv')">JSON → CSV</button>
+                    </div>
+
+                    <!-- CSV to JSON -->
+                    <div class="csv-json-mode active" id="csvToJsonMode">
+                        <div class="input-group">
+                            <label>CSV 입력</label>
+                            <textarea id="csvInput" placeholder="name,age,city&#10;John,30,Seoul&#10;Jane,25,Busan"></textarea>
+                        </div>
+
+                        <div class="options-group">
+                            <div class="option-item">
+                                <input type="checkbox" id="csvHasHeader" checked>
+                                <label for="csvHasHeader">첫 줄을 헤더로 사용</label>
+                            </div>
+                            <div class="option-item">
+                                <label for="csvDelimiter">구분자:</label>
+                                <select id="csvDelimiter">
+                                    <option value=",">콤마 (,)</option>
+                                    <option value="&#9;">탭</option>
+                                    <option value=";">세미콜론 (;)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="btn-group">
+                            <button class="btn btn-primary" onclick="convertCsvToJson()">JSON으로 변환</button>
+                        </div>
+
+                        <div class="output-header">
+                            <h3>JSON 결과</h3>
+                            <button class="btn btn-copy" onclick="copyOutput('csvToJsonOutput')">📋 복사</button>
+                        </div>
+                        <div class="output-area" id="csvToJsonOutput">변환 결과가 여기에 표시됩니다.</div>
+                    </div>
+
+                    <!-- JSON to CSV -->
+                    <div class="csv-json-mode" id="jsonToCsvMode">
+                        <div class="input-group">
+                            <label>JSON 입력</label>
+                            <textarea id="jsonToCsvInput" placeholder='[{"name":"John","age":30},{"name":"Jane","age":25}]'></textarea>
+                        </div>
+
+                        <div class="options-group">
+                            <div class="option-item">
+                                <input type="checkbox" id="jsonIncludeHeader" checked>
+                                <label for="jsonIncludeHeader">헤더 포함</label>
+                            </div>
+                            <div class="option-item">
+                                <label for="jsonDelimiter">구분자:</label>
+                                <select id="jsonDelimiter">
+                                    <option value=",">콤마 (,)</option>
+                                    <option value="&#9;">탭</option>
+                                    <option value=";">세미콜론 (;)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="btn-group">
+                            <button class="btn btn-primary" onclick="convertJsonToCsv()">CSV로 변환</button>
+                            <button class="btn" onclick="downloadCsv()">💾 다운로드</button>
+                        </div>
+
+                        <div class="output-header">
+                            <h3>CSV 결과</h3>
+                            <button class="btn btn-copy" onclick="copyOutput('jsonToCsvOutput')">📋 복사</button>
+                        </div>
+                        <div class="output-area" id="jsonToCsvOutput">변환 결과가 여기에 표시됩니다.</div>
+                    </div>
+
+                    <div class="chain-wrapper">
+                        <span class="chain-label">다른 도구로 보내기:</span>
+                        <div class="chain-dropdown">
+                            <button class="chain-btn" onclick="Chain.toggleMenu(this)">도구 선택 ▾</button>
+                            <div class="chain-menu"></div>
+                        </div>
+                    </div>
                 </section>
 
             </div>
@@ -1923,8 +2323,8 @@ UUID가 여기에 표시됩니다.</div>
             },
 
             filter(query) {
-                const menuItems = document.querySelectorAll('#toolNav .menu-item:not(#favoritesContainer .menu-item)');
-                const categories = document.querySelectorAll('#toolNav .menu-category:not(#favoritesSection .menu-category)');
+                const menuItems = document.querySelectorAll('#toolNav .menu-item');
+                const categories = document.querySelectorAll('#toolNav .menu-category');
                 const q = query.toLowerCase().trim();
 
                 if (!q) {
@@ -1969,115 +2369,16 @@ UUID가 여기에 표시됩니다.</div>
                     'base64': 'dev-tools',
                     'url-encode': 'dev-tools',
                     'timestamp': 'dev-tools',
+                    'regex-tester': 'dev-tools',
+                    'color-converter': 'dev-tools',
+                    'jwt-decoder': 'dev-tools',
+                    'text-diff': 'text-analysis',
+                    'csv-json': 'data-processing',
                     'date-calc': 'calc-gen',
                     'password-gen': 'calc-gen',
                     'uuid-gen': 'calc-gen'
                 };
                 return mapping[section];
-            }
-        };
-
-        /* ==================== Favorites Module ==================== */
-        const Favorites = {
-            storageKey: 'toolkit_favorites',
-            tools: {},
-
-            init() {
-                this.tools = {
-                    'char-counter': { name: '글자수 / 바이트수 계산기', icon: '📊' },
-                    'case-converter': { name: '케이스 변환', icon: '🔄' },
-                    'letter-case': { name: '대소문자 변환', icon: '🔠' },
-                    'whitespace': { name: '줄바꿈 / 공백 정리', icon: '📄' },
-                    'duplicate-lines': { name: '중복 줄 제거', icon: '📑' },
-                    'json-formatter': { name: 'JSON Formatter', icon: '{ }' },
-                    'base64': { name: 'Base64 인코딩', icon: '🔐' },
-                    'url-encode': { name: 'URL 인코딩', icon: '🔗' },
-                    'timestamp': { name: '타임스탬프 변환', icon: '⏰' },
-                    'date-calc': { name: '날짜 계산기', icon: '📅' },
-                    'password-gen': { name: '비밀번호 생성기', icon: '🔑' },
-                    'uuid-gen': { name: 'UUID 생성기', icon: '🆔' }
-                };
-
-                this.loadFavorites();
-                this.bindEvents();
-                this.render();
-            },
-
-            loadFavorites() {
-                const saved = localStorage.getItem(this.storageKey);
-                this.favorites = saved ? JSON.parse(saved) : [];
-            },
-
-            saveFavorites() {
-                localStorage.setItem(this.storageKey, JSON.stringify(this.favorites));
-            },
-
-            bindEvents() {
-                document.querySelectorAll('.favorite-btn').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        this.toggle(btn.dataset.tool);
-                    });
-                });
-
-                document.querySelectorAll('.tool-favorite-btn').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        this.toggle(btn.dataset.tool);
-                    });
-                });
-            },
-
-            toggle(toolId) {
-                const index = this.favorites.indexOf(toolId);
-                if (index === -1) {
-                    this.favorites.push(toolId);
-                    Utils.showToast('즐겨찾기에 추가되었습니다!');
-                } else {
-                    this.favorites.splice(index, 1);
-                    Utils.showToast('즐겨찾기에서 제거되었습니다.');
-                }
-                this.saveFavorites();
-                this.render();
-            },
-
-            render() {
-                const section = document.getElementById('favoritesSection');
-                const container = document.getElementById('favoritesContainer');
-
-                section.classList.toggle('has-items', this.favorites.length > 0);
-
-                document.querySelectorAll('.favorite-btn').forEach(btn => {
-                    const isActive = this.favorites.includes(btn.dataset.tool);
-                    btn.textContent = isActive ? '★' : '☆';
-                    btn.classList.toggle('active', isActive);
-                });
-
-                document.querySelectorAll('.tool-favorite-btn').forEach(btn => {
-                    const isActive = this.favorites.includes(btn.dataset.tool);
-                    btn.textContent = isActive ? '★ 즐겨찾기' : '☆ 즐겨찾기';
-                    btn.classList.toggle('active', isActive);
-                });
-
-                container.innerHTML = this.favorites.map(toolId => {
-                    const tool = this.tools[toolId];
-                    if (!tool) return '';
-                    return `
-                        <a class="menu-item" data-section="${toolId}">
-                            <span class="menu-icon">${tool.icon}</span>
-                            <span class="menu-text">${tool.name}</span>
-                        </a>
-                    `;
-                }).join('');
-
-                container.querySelectorAll('.menu-item').forEach(item => {
-                    item.addEventListener('click', () => {
-                        const sectionId = item.dataset.section;
-                        const originalItem = document.querySelector(`#toolNav .menu-item[data-section="${sectionId}"]:not(#favoritesContainer .menu-item)`);
-                        if (originalItem) {
-                            Navigation.navigateTo(sectionId, originalItem);
-                        }
-                    });
-                });
             }
         };
 
@@ -2090,7 +2391,10 @@ UUID가 여기에 표시됩니다.</div>
                 { id: 'duplicate-lines', input: 'duplicateInput', name: '중복 줄 제거', icon: '📑' },
                 { id: 'json-formatter', input: 'jsonInput', name: 'JSON Formatter', icon: '{ }' },
                 { id: 'base64', input: 'base64Input', name: 'Base64 인코딩', icon: '🔐' },
-                { id: 'url-encode', input: 'urlInput', name: 'URL 인코딩', icon: '🔗' }
+                { id: 'url-encode', input: 'urlInput', name: 'URL 인코딩', icon: '🔗' },
+                { id: 'text-diff', input: 'diffOriginal', name: '텍스트 Diff', icon: '📊' },
+                { id: 'regex-tester', input: 'regexTestString', name: '정규식 테스터', icon: '🔍' },
+                { id: 'csv-json', input: 'csvInput', name: 'CSV ↔ JSON', icon: '🔄' }
             ],
 
             init() {
@@ -2203,6 +2507,12 @@ UUID가 여기에 표시됩니다.</div>
                     }
                 }
                 return byteLength;
+            },
+
+            escapeHtml(str) {
+                const div = document.createElement('div');
+                div.textContent = str;
+                return div.innerHTML;
             }
         };
 
@@ -2595,7 +2905,7 @@ UUID가 여기에 표시됩니다.</div>
                 color = 'var(--success)';
             }
 
-            document.getElementById('ddayOutput').innerHTML = `<span style="background: var(--gradient-1); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">${result}</span>`;
+            document.getElementById('ddayOutput').textContent = result;
         }
 
         /* ==================== 11. 비밀번호 생성기 ==================== */
@@ -2686,6 +2996,428 @@ UUID가 여기에 표시됩니다.</div>
             document.getElementById('uuidOutput').textContent = uuids.join('\n');
         }
 
+        /* ==================== Text Diff ==================== */
+        function compareDiff() {
+            const original = document.getElementById('diffOriginal').value;
+            const modified = document.getElementById('diffModified').value;
+
+            if (!original && !modified) {
+                Utils.showToast('텍스트를 입력해주세요.');
+                return;
+            }
+
+            const originalLines = original.split('\n');
+            const modifiedLines = modified.split('\n');
+
+            let added = 0, removed = 0, unchanged = 0;
+            const result = [];
+
+            const maxLen = Math.max(originalLines.length, modifiedLines.length);
+
+            for (let i = 0; i < maxLen; i++) {
+                const origLine = originalLines[i];
+                const modLine = modifiedLines[i];
+
+                if (origLine === undefined) {
+                    result.push({ type: 'added', text: modLine });
+                    added++;
+                } else if (modLine === undefined) {
+                    result.push({ type: 'removed', text: origLine });
+                    removed++;
+                } else if (origLine === modLine) {
+                    result.push({ type: 'unchanged', text: origLine });
+                    unchanged++;
+                } else {
+                    result.push({ type: 'removed', text: origLine });
+                    result.push({ type: 'added', text: modLine });
+                    removed++;
+                    added++;
+                }
+            }
+
+            document.getElementById('diffAdded').textContent = added;
+            document.getElementById('diffRemoved').textContent = removed;
+            document.getElementById('diffUnchanged').textContent = unchanged;
+
+            const outputHtml = result.map(line => {
+                const prefix = line.type === 'added' ? '+ ' : line.type === 'removed' ? '- ' : '  ';
+                return `<div class="diff-line diff-${line.type}">${prefix}${Utils.escapeHtml(line.text)}</div>`;
+            }).join('');
+
+            document.getElementById('diffOutput').innerHTML = outputHtml;
+            document.getElementById('diffStats').style.display = 'flex';
+            document.getElementById('diffOutputHeader').style.display = 'flex';
+            document.getElementById('diffOutput').style.display = 'block';
+            document.getElementById('diffChain').style.display = 'flex';
+        }
+
+        function clearDiff() {
+            document.getElementById('diffOriginal').value = '';
+            document.getElementById('diffModified').value = '';
+            document.getElementById('diffOutput').innerHTML = '';
+            document.getElementById('diffStats').style.display = 'none';
+            document.getElementById('diffOutputHeader').style.display = 'none';
+            document.getElementById('diffOutput').style.display = 'none';
+            document.getElementById('diffChain').style.display = 'none';
+        }
+
+        /* ==================== Regex Tester ==================== */
+        function testRegex() {
+            const pattern = document.getElementById('regexPattern').value;
+            const testString = document.getElementById('regexTestString').value;
+            const highlightEl = document.getElementById('regexHighlight');
+            const matchesEl = document.getElementById('regexMatches');
+
+            if (!pattern) {
+                highlightEl.innerHTML = testString ? Utils.escapeHtml(testString) : '매칭 결과가 여기에 표시됩니다.';
+                matchesEl.innerHTML = '';
+                return;
+            }
+
+            const flags = (document.getElementById('regexFlagG').checked ? 'g' : '') +
+                         (document.getElementById('regexFlagI').checked ? 'i' : '') +
+                         (document.getElementById('regexFlagM').checked ? 'm' : '');
+
+            try {
+                const regex = new RegExp(pattern, flags);
+                const matches = testString.match(regex) || [];
+
+                // Highlight matches
+                let highlighted = testString;
+                if (flags.includes('g')) {
+                    highlighted = testString.replace(regex, match => `<mark>${Utils.escapeHtml(match)}</mark>`);
+                } else if (matches.length > 0) {
+                    highlighted = testString.replace(regex, match => `<mark>${Utils.escapeHtml(match)}</mark>`);
+                }
+
+                highlightEl.innerHTML = highlighted || '매칭 결과가 여기에 표시됩니다.';
+
+                // Show matches
+                if (matches.length > 0) {
+                    const uniqueMatches = [...new Set(matches)];
+                    matchesEl.innerHTML = `
+                        <div class="match-count">${matches.length}개 매칭됨 (고유: ${uniqueMatches.length}개)</div>
+                        <div class="match-list">
+                            ${uniqueMatches.map(m => `<span class="match-item">${Utils.escapeHtml(m)}</span>`).join('')}
+                        </div>
+                    `;
+                } else {
+                    matchesEl.innerHTML = '<div class="match-count">매칭된 항목 없음</div>';
+                }
+            } catch (e) {
+                highlightEl.innerHTML = `<span class="regex-error">정규식 오류: ${e.message}</span>`;
+                matchesEl.innerHTML = '';
+            }
+        }
+
+        function copyRegexMatches() {
+            const pattern = document.getElementById('regexPattern').value;
+            const testString = document.getElementById('regexTestString').value;
+            const flags = (document.getElementById('regexFlagG').checked ? 'g' : '') +
+                         (document.getElementById('regexFlagI').checked ? 'i' : '') +
+                         (document.getElementById('regexFlagM').checked ? 'm' : '');
+
+            try {
+                const regex = new RegExp(pattern, flags);
+                const matches = testString.match(regex) || [];
+                navigator.clipboard.writeText(matches.join('\n'));
+                Utils.showToast('매칭 결과가 복사되었습니다!');
+            } catch (e) {
+                Utils.showToast('복사할 수 없습니다.');
+            }
+        }
+
+        /* ==================== Color Converter ==================== */
+        function updateFromPicker() {
+            const hex = document.getElementById('colorPicker').value;
+            updateAllColorFormats(hex);
+        }
+
+        function updateFromHex() {
+            let hex = document.getElementById('colorHex').value.trim();
+            if (!hex.startsWith('#')) hex = '#' + hex;
+            if (/^#[0-9A-Fa-f]{6}$/.test(hex)) {
+                updateAllColorFormats(hex);
+            }
+        }
+
+        function updateFromRgb() {
+            const rgb = document.getElementById('colorRgb').value.trim();
+            const match = rgb.match(/rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/i);
+            if (match) {
+                const hex = rgbToHex(parseInt(match[1]), parseInt(match[2]), parseInt(match[3]));
+                updateAllColorFormats(hex, 'rgb');
+            }
+        }
+
+        function updateFromHsl() {
+            const hsl = document.getElementById('colorHsl').value.trim();
+            const match = hsl.match(/hsl\s*\(\s*(\d+)\s*,\s*(\d+)%?\s*,\s*(\d+)%?\s*\)/i);
+            if (match) {
+                const rgb = hslToRgb(parseInt(match[1]), parseInt(match[2]), parseInt(match[3]));
+                const hex = rgbToHex(rgb.r, rgb.g, rgb.b);
+                updateAllColorFormats(hex, 'hsl');
+            }
+        }
+
+        function updateAllColorFormats(hex, skipInput = null) {
+            const r = parseInt(hex.slice(1, 3), 16);
+            const g = parseInt(hex.slice(3, 5), 16);
+            const b = parseInt(hex.slice(5, 7), 16);
+            const hsl = rgbToHsl(r, g, b);
+
+            document.getElementById('colorPreview').style.background = hex;
+            document.getElementById('colorPicker').value = hex;
+
+            if (skipInput !== 'hex') document.getElementById('colorHex').value = hex.toUpperCase();
+            if (skipInput !== 'rgb') document.getElementById('colorRgb').value = `rgb(${r}, ${g}, ${b})`;
+            if (skipInput !== 'hsl') document.getElementById('colorHsl').value = `hsl(${hsl.h}, ${hsl.s}%, ${hsl.l}%)`;
+        }
+
+        function rgbToHex(r, g, b) {
+            return '#' + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join('');
+        }
+
+        function rgbToHsl(r, g, b) {
+            r /= 255; g /= 255; b /= 255;
+            const max = Math.max(r, g, b), min = Math.min(r, g, b);
+            let h, s, l = (max + min) / 2;
+
+            if (max === min) {
+                h = s = 0;
+            } else {
+                const d = max - min;
+                s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                switch (max) {
+                    case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+                    case g: h = ((b - r) / d + 2) / 6; break;
+                    case b: h = ((r - g) / d + 4) / 6; break;
+                }
+            }
+            return { h: Math.round(h * 360), s: Math.round(s * 100), l: Math.round(l * 100) };
+        }
+
+        function hslToRgb(h, s, l) {
+            h /= 360; s /= 100; l /= 100;
+            let r, g, b;
+
+            if (s === 0) {
+                r = g = b = l;
+            } else {
+                const hue2rgb = (p, q, t) => {
+                    if (t < 0) t += 1;
+                    if (t > 1) t -= 1;
+                    if (t < 1/6) return p + (q - p) * 6 * t;
+                    if (t < 1/2) return q;
+                    if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+                    return p;
+                };
+                const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+                const p = 2 * l - q;
+                r = hue2rgb(p, q, h + 1/3);
+                g = hue2rgb(p, q, h);
+                b = hue2rgb(p, q, h - 1/3);
+            }
+            return { r: Math.round(r * 255), g: Math.round(g * 255), b: Math.round(b * 255) };
+        }
+
+        function copyColorValue(inputId) {
+            const value = document.getElementById(inputId).value;
+            navigator.clipboard.writeText(value);
+            Utils.showToast('복사되었습니다!');
+        }
+
+        /* ==================== JWT Decoder ==================== */
+        function decodeJWT() {
+            const token = document.getElementById('jwtInput').value.trim();
+            const headerEl = document.getElementById('jwtHeader');
+            const payloadEl = document.getElementById('jwtPayload');
+            const signatureEl = document.getElementById('jwtSignature');
+            const statusEl = document.getElementById('jwtStatus');
+
+            if (!token) {
+                headerEl.textContent = 'Header가 여기에 표시됩니다.';
+                payloadEl.textContent = 'Payload가 여기에 표시됩니다.';
+                signatureEl.textContent = 'Signature가 여기에 표시됩니다.';
+                statusEl.innerHTML = '';
+                return;
+            }
+
+            const parts = token.split('.');
+            if (parts.length !== 3) {
+                headerEl.innerHTML = '<span style="color: var(--error);">유효하지 않은 JWT 형식입니다.</span>';
+                payloadEl.textContent = '';
+                signatureEl.textContent = '';
+                statusEl.innerHTML = '';
+                return;
+            }
+
+            try {
+                const header = JSON.parse(atob(parts[0]));
+                const payload = JSON.parse(atob(parts[1]));
+
+                headerEl.textContent = JSON.stringify(header, null, 2);
+
+                // Format payload with date conversions
+                let payloadDisplay = JSON.stringify(payload, null, 2);
+                ['exp', 'iat', 'nbf'].forEach(field => {
+                    if (payload[field]) {
+                        const date = new Date(payload[field] * 1000);
+                        const dateStr = date.toLocaleString('ko-KR');
+                        payloadDisplay = payloadDisplay.replace(
+                            `"${field}": ${payload[field]}`,
+                            `"${field}": ${payload[field]} // ${dateStr}`
+                        );
+                    }
+                });
+                payloadEl.textContent = payloadDisplay;
+
+                signatureEl.textContent = parts[2];
+
+                // Check expiration
+                if (payload.exp) {
+                    const now = Math.floor(Date.now() / 1000);
+                    if (payload.exp > now) {
+                        statusEl.innerHTML = '<span class="badge badge-valid">✅ 유효한 토큰</span>';
+                    } else {
+                        statusEl.innerHTML = '<span class="badge badge-expired">❌ 만료된 토큰</span>';
+                    }
+                } else {
+                    statusEl.innerHTML = '';
+                }
+            } catch (e) {
+                headerEl.innerHTML = '<span style="color: var(--error);">디코딩 오류: ' + e.message + '</span>';
+                payloadEl.textContent = '';
+                signatureEl.textContent = '';
+                statusEl.innerHTML = '';
+            }
+        }
+
+        function copyJwtSection(sectionId) {
+            const text = document.getElementById(sectionId).textContent;
+            navigator.clipboard.writeText(text);
+            Utils.showToast('복사되었습니다!');
+        }
+
+        /* ==================== CSV JSON Converter ==================== */
+        function switchCsvJsonMode(mode) {
+            document.querySelectorAll('.mode-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.mode === mode);
+            });
+            document.getElementById('csvToJsonMode').classList.toggle('active', mode === 'csv-to-json');
+            document.getElementById('jsonToCsvMode').classList.toggle('active', mode === 'json-to-csv');
+        }
+
+        function convertCsvToJson() {
+            const csv = document.getElementById('csvInput').value.trim();
+            const hasHeader = document.getElementById('csvHasHeader').checked;
+            const delimiter = document.getElementById('csvDelimiter').value;
+
+            if (!csv) {
+                Utils.showToast('CSV 데이터를 입력해주세요.');
+                return;
+            }
+
+            try {
+                const lines = csv.split('\n').filter(line => line.trim());
+                const result = [];
+
+                if (hasHeader && lines.length > 0) {
+                    const headers = parseCsvLine(lines[0], delimiter);
+                    for (let i = 1; i < lines.length; i++) {
+                        const values = parseCsvLine(lines[i], delimiter);
+                        const obj = {};
+                        headers.forEach((header, idx) => {
+                            obj[header.trim()] = values[idx]?.trim() || '';
+                        });
+                        result.push(obj);
+                    }
+                } else {
+                    lines.forEach(line => {
+                        result.push(parseCsvLine(line, delimiter));
+                    });
+                }
+
+                document.getElementById('csvToJsonOutput').textContent = JSON.stringify(result, null, 2);
+            } catch (e) {
+                document.getElementById('csvToJsonOutput').innerHTML = `<span style="color: var(--error);">변환 오류: ${e.message}</span>`;
+            }
+        }
+
+        function parseCsvLine(line, delimiter) {
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === delimiter && !inQuotes) {
+                    result.push(current);
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            result.push(current);
+            return result;
+        }
+
+        function convertJsonToCsv() {
+            const json = document.getElementById('jsonToCsvInput').value.trim();
+            const includeHeader = document.getElementById('jsonIncludeHeader').checked;
+            const delimiter = document.getElementById('jsonDelimiter').value;
+
+            if (!json) {
+                Utils.showToast('JSON 데이터를 입력해주세요.');
+                return;
+            }
+
+            try {
+                const data = JSON.parse(json);
+                if (!Array.isArray(data) || data.length === 0) {
+                    throw new Error('JSON 배열 형식이어야 합니다.');
+                }
+
+                const headers = Object.keys(data[0]);
+                const lines = [];
+
+                if (includeHeader) {
+                    lines.push(headers.join(delimiter));
+                }
+
+                data.forEach(row => {
+                    const values = headers.map(h => {
+                        const val = row[h] ?? '';
+                        return String(val).includes(delimiter) || String(val).includes('"')
+                            ? `"${String(val).replace(/"/g, '""')}"`
+                            : val;
+                    });
+                    lines.push(values.join(delimiter));
+                });
+
+                document.getElementById('jsonToCsvOutput').textContent = lines.join('\n');
+            } catch (e) {
+                document.getElementById('jsonToCsvOutput').innerHTML = `<span style="color: var(--error);">변환 오류: ${e.message}</span>`;
+            }
+        }
+
+        function downloadCsv() {
+            const csv = document.getElementById('jsonToCsvOutput').textContent;
+            if (!csv || csv.includes('변환 오류')) {
+                Utils.showToast('다운로드할 CSV가 없습니다.');
+                return;
+            }
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'data.csv';
+            link.click();
+            Utils.showToast('CSV 파일이 다운로드되었습니다!');
+        }
+
         /* ==================== Common Functions ==================== */
         function clearInput(inputId) {
             document.getElementById(inputId).value = '';
@@ -2717,13 +3449,15 @@ UUID가 여기에 표시됩니다.</div>
             Navigation.init();
             CharCounter.init();
             Search.init();
-            Favorites.init();
             Chain.init();
 
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('dateStart').value = today;
             document.getElementById('dateEnd').value = today;
             document.getElementById('ddayDate').value = today;
+
+            // 색상 변환기 초기화
+            updateAllColorFormats('#6366f1');
         });
     </script>
 </body>
