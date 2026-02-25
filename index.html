@@ -192,6 +192,8 @@
             z-index: 100;
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             backdrop-filter: blur(20px);
+            display: flex;
+            flex-direction: column;
         }
 
         .sidebar::-webkit-scrollbar {
@@ -1503,6 +1505,30 @@
                 padding: 8px 10px;
             }
         }
+
+        /* Sidebar Nav */
+        .sidebar nav {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        /* Sidebar Footer */
+        .sidebar-footer {
+            padding: 16px 24px;
+            margin-top: auto;
+            border-top: 1px solid var(--border);
+        }
+
+        .privacy-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: color 0.2s;
+        }
+
+        .privacy-link:hover {
+            color: var(--accent);
+        }
     </style>
 </head>
 <body>
@@ -1598,6 +1624,9 @@
                 <span class="menu-text">UUID 생성기</span>
             </a>
         </nav>
+        <div class="sidebar-footer">
+            <a href="privacy.html" class="privacy-link">개인정보처리방침</a>
+        </div>
     </aside>
 
     <!-- Main Content -->
