@@ -1,5 +1,1 @@
 blank_issues_enabled: false
-contact_links:
-  - name: 기능 요청
-    url: https://github.com/munyeoll/toolkit/discussions
-    about: 새로운 기능 아이디어가 있으면 Discussion에서 제안해주세요
