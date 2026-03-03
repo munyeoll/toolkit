@@ -2672,39 +2672,43 @@ UUID가 여기에 표시됩니다.</div>
         };
 
         /* ==================== 2. 케이스 변환 ==================== */
+        // 입력을 단어 배열로 분리하는 헬퍼 함수
+        function toWords(input) {
+            return input
+                // 연속 대문자 뒤에 소문자가 오면 분리 (XMLHttp → XML Http)
+                .replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2')
+                // 소문자/숫자 뒤에 대문자가 오면 분리 (helloWorld → hello World)
+                .replace(/([a-z\d])([A-Z])/g, '$1 $2')
+                // 구분자들을 공백으로 변환
+                .replace(/[-_\s]+/g, ' ')
+                .trim()
+                .toLowerCase()
+                .split(' ')
+                .filter(w => w.length > 0);
+        }
+
         function convertToCamel() {
             const input = document.getElementById('caseInput').value;
-            const result = input
-                .toLowerCase()
-                .replace(/[-_\s]+(.)?/g, (_, c) => c ? c.toUpperCase() : '');
+            const words = toWords(input);
+            const result = words.map((w, i) => i === 0 ? w : w.charAt(0).toUpperCase() + w.slice(1)).join('');
             document.getElementById('caseOutput').textContent = result;
         }
 
         function convertToSnake() {
             const input = document.getElementById('caseInput').value;
-            const result = input
-                .replace(/([A-Z])/g, '_$1')
-                .replace(/[-\s]+/g, '_')
-                .toLowerCase()
-                .replace(/^_/, '');
+            const result = toWords(input).join('_');
             document.getElementById('caseOutput').textContent = result;
         }
 
         function convertToPascal() {
             const input = document.getElementById('caseInput').value;
-            const result = input
-                .toLowerCase()
-                .replace(/(^|[-_\s]+)(.)?/g, (_, __, c) => c ? c.toUpperCase() : '');
+            const result = toWords(input).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join('');
             document.getElementById('caseOutput').textContent = result;
         }
 
         function convertToKebab() {
             const input = document.getElementById('caseInput').value;
-            const result = input
-                .replace(/([A-Z])/g, '-$1')
-                .replace(/[_\s]+/g, '-')
-                .toLowerCase()
-                .replace(/^-/, '');
+            const result = toWords(input).join('-');
             document.getElementById('caseOutput').textContent = result;
         }
 
