@@ -1532,6 +1532,11 @@
         .sidebar-footer a:hover {
             color: var(--accent);
         }
+
+        /* 잘못된 입력값 표시 (색상 변환기 등) */
+        .input-invalid {
+            border-color: var(--error) !important;
+        }
     </style>
 </head>
 <body>
@@ -1926,6 +1931,7 @@
                         <button class="btn btn-primary" onclick="encodeURL()">인코딩</button>
                         <button class="btn btn-primary" onclick="decodeURL()">디코딩</button>
                         <button class="btn btn-primary" onclick="encodeURLComponent()">컴포넌트 인코딩</button>
+                        <button class="btn btn-primary" onclick="decodeURLComponent()">컴포넌트 디코딩</button>
                         <button class="btn btn-secondary" onclick="clearInput('urlInput')">초기화</button>
                     </div>
 
@@ -2529,13 +2535,14 @@ UUID가 여기에 표시됩니다.</div>
                 const inputId = item.dataset.input;
 
                 const sourceEl = document.getElementById(sourceId);
-                const text = sourceEl?.textContent || '';
 
-                if (!text || text.includes('여기에 표시됩니다') || text.includes('결과가 여기에')) {
+                if (Utils.isEmptyOutput(sourceEl)) {
                     Utils.showToast('전송할 내용이 없습니다.', true);
                     this.closeAllMenus();
                     return;
                 }
+
+                const text = sourceEl.textContent;
 
                 const inputEl = document.getElementById(inputId);
                 if (inputEl) {
@@ -2601,6 +2608,39 @@ UUID가 여기에 표시됩니다.</div>
                 const div = document.createElement('div');
                 div.textContent = str;
                 return div.innerHTML;
+            },
+
+            // 출력 영역의 초기 안내 문구를 기억해 두었다가 "빈 상태" 판별에 사용
+            capturePlaceholders() {
+                document.querySelectorAll('.output-area').forEach(el => {
+                    el.dataset.placeholder = el.textContent.trim();
+                });
+            },
+
+            // 출력이 비어 있거나 초기 안내 문구 그대로인지 판별 (문자열 부분매칭 대신 정확 비교)
+            isEmptyOutput(el) {
+                if (!el) return true;
+                const text = el.textContent;
+                if (!text.trim()) return true;
+                if (el.dataset.placeholder !== undefined && text.trim() === el.dataset.placeholder) return true;
+                return false;
+            },
+
+            // base64url 문자열을 UTF-8로 안전하게 디코딩 (JWT 등)
+            base64UrlDecode(str) {
+                let s = str.replace(/-/g, '+').replace(/_/g, '/');
+                const pad = s.length % 4;
+                if (pad) s += '='.repeat(4 - pad);
+                const binary = atob(s);
+                const bytes = Uint8Array.from(binary, c => c.charCodeAt(0));
+                return new TextDecoder('utf-8').decode(bytes);
+            },
+
+            // 'YYYY-MM-DD' 문자열을 로컬 자정 기준 Date로 파싱 (UTC 파싱으로 인한 하루 오차 방지)
+            parseLocalDate(str) {
+                const m = str.match(/^(\d{4})-(\d{2})-(\d{2})/);
+                if (!m) return new Date(str);
+                return new Date(parseInt(m[1]), parseInt(m[2]) - 1, parseInt(m[3]));
             }
         };
 
@@ -2633,9 +2673,27 @@ UUID가 여기에 표시됩니다.</div>
                     sidebar.classList.remove('open');
                     overlay.classList.remove('show');
                 });
+
+                // 뒤로/앞으로 가기 및 직접 해시 변경 대응
+                window.addEventListener('popstate', () => this.applyHash());
+                window.addEventListener('hashchange', () => this.applyHash());
+
+                // 페이지 로드 시 URL 해시(딥링크)를 반영
+                this.applyHash();
             },
 
-            navigateTo(sectionId, menuItem) {
+            // 현재 URL 해시에 해당하는 도구로 전환 (히스토리는 건드리지 않음)
+            applyHash() {
+                const id = decodeURIComponent(location.hash.replace(/^#/, ''));
+                if (!id) return;
+                const menuItem = document.querySelector(`#toolNav .menu-item[data-section="${id}"]`);
+                const section = document.getElementById(id);
+                if (menuItem && section && section.classList.contains('tool-section')) {
+                    this.navigateTo(id, menuItem, false);
+                }
+            },
+
+            navigateTo(sectionId, menuItem, updateHash = true) {
                 document.querySelectorAll('.tool-section').forEach(section => {
                     section.classList.remove('active');
                 });
@@ -2649,6 +2707,11 @@ UUID가 여기에 표시됩니다.</div>
 
                 const titleText = menuItem.textContent.trim();
                 document.getElementById('headerTitle').textContent = titleText;
+
+                // 도구별 URL(#section-id) 유지 — 북마크/공유/뒤로가기 지원
+                if (updateHash && location.hash !== '#' + sectionId) {
+                    history.pushState(null, '', '#' + sectionId);
+                }
             }
         };
 
@@ -2876,23 +2939,45 @@ UUID가 여기에 표시됩니다.</div>
             }
         }
 
+        function decodeURLComponent() {
+            const input = document.getElementById('urlInput').value;
+            Utils.hideError('urlError');
+
+            try {
+                const decoded = decodeURIComponent(input);
+                document.getElementById('urlOutput').textContent = decoded;
+            } catch (e) {
+                Utils.showError('urlError', `디코딩 오류: 유효한 URL 인코딩이 아닙니다.`);
+            }
+        }
+
         /* ==================== 9. 타임스탬프 변환 ==================== */
         function convertTimestamp() {
             const input = document.getElementById('timestampInput').value;
             Utils.hideError('timestampError');
 
             try {
-                const timestamp = parseInt(input);
-                if (isNaN(timestamp)) {
+                const trimmed = input.trim();
+                if (!/^-?\d+$/.test(trimmed)) {
                     throw new Error('유효한 숫자가 아닙니다.');
                 }
+                const num = Number(trimmed);
 
-                const date = new Date(timestamp * 1000);
+                // 자릿수로 초/밀리초 자동 판별 (13자리 이상이면 밀리초로 간주)
+                const isMillis = trimmed.replace('-', '').length >= 13;
+                const ms = isMillis ? num : num * 1000;
+                const unitLabel = isMillis ? '밀리초 입력으로 인식' : '초 입력으로 인식';
+
+                const date = new Date(ms);
                 if (isNaN(date.getTime())) {
                     throw new Error('유효한 타임스탬프가 아닙니다.');
                 }
 
                 const resultHTML = `
+                    <div class="timestamp-item">
+                        <span>입력 단위</span>
+                        <span>${unitLabel}</span>
+                    </div>
                     <div class="timestamp-item">
                         <span>로컬 시간</span>
                         <span>${date.toLocaleString('ko-KR')}</span>
@@ -2907,7 +2992,7 @@ UUID가 여기에 표시됩니다.</div>
                     </div>
                     <div class="timestamp-item">
                         <span>밀리초</span>
-                        <span>${timestamp * 1000}</span>
+                        <span>${ms}</span>
                     </div>
                 `;
                 document.getElementById('timestampResult').innerHTML = resultHTML;
@@ -2932,6 +3017,10 @@ UUID가 여기에 표시됩니다.</div>
             }
 
             const date = new Date(input);
+            if (isNaN(date.getTime())) {
+                Utils.showError('timestampError', '유효한 날짜가 아닙니다.');
+                return;
+            }
             const timestamp = Math.floor(date.getTime() / 1000);
             document.getElementById('timestampOutput').textContent = `Unix Timestamp: ${timestamp}\n밀리초: ${timestamp * 1000}`;
         }
@@ -2946,8 +3035,8 @@ UUID가 여기에 표시됩니다.</div>
                 return;
             }
 
-            const startDate = new Date(start);
-            const endDate = new Date(end);
+            const startDate = Utils.parseLocalDate(start);
+            const endDate = Utils.parseLocalDate(end);
             const diffTime = Math.abs(endDate - startDate);
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
             const diffWeeks = Math.floor(diffDays / 7);
@@ -2977,7 +3066,7 @@ UUID가 여기에 표시됩니다.</div>
                 return;
             }
 
-            const target = new Date(targetDate);
+            const target = Utils.parseLocalDate(targetDate);
             const today = new Date();
             today.setHours(0, 0, 0, 0);
             target.setHours(0, 0, 0, 0);
@@ -3089,6 +3178,42 @@ UUID가 여기에 표시됩니다.</div>
         }
 
         /* ==================== Text Diff ==================== */
+        // LCS 기반 줄 단위 diff (삽입/삭제를 정확히 정렬)
+        function lcsLineDiff(a, b) {
+            const n = a.length, m = b.length;
+
+            // 입력이 너무 크면(메모리 보호) 단순 인덱스 비교로 폴백
+            if (n * m > 4000000) {
+                const out = [];
+                const maxLen = Math.max(n, m);
+                for (let i = 0; i < maxLen; i++) {
+                    if (a[i] === undefined) out.push({ type: 'added', text: b[i] });
+                    else if (b[i] === undefined) out.push({ type: 'removed', text: a[i] });
+                    else if (a[i] === b[i]) out.push({ type: 'unchanged', text: a[i] });
+                    else { out.push({ type: 'removed', text: a[i] }); out.push({ type: 'added', text: b[i] }); }
+                }
+                return out;
+            }
+
+            const dp = Array.from({ length: n + 1 }, () => new Int32Array(m + 1));
+            for (let i = n - 1; i >= 0; i--) {
+                for (let j = m - 1; j >= 0; j--) {
+                    dp[i][j] = a[i] === b[j] ? dp[i + 1][j + 1] + 1 : Math.max(dp[i + 1][j], dp[i][j + 1]);
+                }
+            }
+
+            const out = [];
+            let i = 0, j = 0;
+            while (i < n && j < m) {
+                if (a[i] === b[j]) { out.push({ type: 'unchanged', text: a[i] }); i++; j++; }
+                else if (dp[i + 1][j] >= dp[i][j + 1]) { out.push({ type: 'removed', text: a[i] }); i++; }
+                else { out.push({ type: 'added', text: b[j] }); j++; }
+            }
+            while (i < n) { out.push({ type: 'removed', text: a[i] }); i++; }
+            while (j < m) { out.push({ type: 'added', text: b[j] }); j++; }
+            return out;
+        }
+
         function compareDiff() {
             const original = document.getElementById('diffOriginal').value;
             const modified = document.getElementById('diffModified').value;
@@ -3101,31 +3226,14 @@ UUID가 여기에 표시됩니다.</div>
             const originalLines = original.split('\n');
             const modifiedLines = modified.split('\n');
 
+            const result = lcsLineDiff(originalLines, modifiedLines);
+
             let added = 0, removed = 0, unchanged = 0;
-            const result = [];
-
-            const maxLen = Math.max(originalLines.length, modifiedLines.length);
-
-            for (let i = 0; i < maxLen; i++) {
-                const origLine = originalLines[i];
-                const modLine = modifiedLines[i];
-
-                if (origLine === undefined) {
-                    result.push({ type: 'added', text: modLine });
-                    added++;
-                } else if (modLine === undefined) {
-                    result.push({ type: 'removed', text: origLine });
-                    removed++;
-                } else if (origLine === modLine) {
-                    result.push({ type: 'unchanged', text: origLine });
-                    unchanged++;
-                } else {
-                    result.push({ type: 'removed', text: origLine });
-                    result.push({ type: 'added', text: modLine });
-                    removed++;
-                    added++;
-                }
-            }
+            result.forEach(line => {
+                if (line.type === 'added') added++;
+                else if (line.type === 'removed') removed++;
+                else unchanged++;
+            });
 
             document.getElementById('diffAdded').textContent = added;
             document.getElementById('diffRemoved').textContent = removed;
@@ -3171,16 +3279,24 @@ UUID가 여기에 표시됩니다.</div>
                          (document.getElementById('regexFlagM').checked ? 'm' : '');
 
             try {
-                const regex = new RegExp(pattern, flags);
-                const matches = testString.match(regex) || [];
-
-                // Highlight matches
-                let highlighted = testString;
-                if (flags.includes('g')) {
-                    highlighted = testString.replace(regex, match => `<mark>${Utils.escapeHtml(match)}</mark>`);
-                } else if (matches.length > 0) {
-                    highlighted = testString.replace(regex, match => `<mark>${Utils.escapeHtml(match)}</mark>`);
+                const isGlobal = flags.includes('g');
+                // 카운트/하이라이트 모두 '전체 매치(m[0])' 기준으로 수집 — 캡처 그룹을 매치로 오인하지 않도록 exec 사용
+                const walkRegex = new RegExp(pattern, flags.includes('g') ? flags : flags + 'g');
+                const matches = [];
+                let highlighted = '';
+                let lastIndex = 0;
+                let m;
+                let guard = 0;
+                while ((m = walkRegex.exec(testString)) !== null) {
+                    matches.push(m[0]);
+                    highlighted += Utils.escapeHtml(testString.slice(lastIndex, m.index));
+                    highlighted += `<mark>${Utils.escapeHtml(m[0])}</mark>`;
+                    lastIndex = m.index + m[0].length;
+                    if (m[0] === '') walkRegex.lastIndex++; // 길이 0 매치 무한루프 방지
+                    if (!isGlobal) break;                  // g 미설정 시 첫 매치만
+                    if (++guard > 100000) break;
                 }
+                highlighted += Utils.escapeHtml(testString.slice(lastIndex));
 
                 highlightEl.innerHTML = highlighted || '매칭 결과가 여기에 표시됩니다.';
 
@@ -3190,7 +3306,7 @@ UUID가 여기에 표시됩니다.</div>
                     matchesEl.innerHTML = `
                         <div class="match-count">${matches.length}개 매칭됨 (고유: ${uniqueMatches.length}개)</div>
                         <div class="match-list">
-                            ${uniqueMatches.map(m => `<span class="match-item">${Utils.escapeHtml(m)}</span>`).join('')}
+                            ${uniqueMatches.map(mm => `<span class="match-item">${Utils.escapeHtml(mm)}</span>`).join('')}
                         </div>
                     `;
                 } else {
@@ -3210,12 +3326,23 @@ UUID가 여기에 표시됩니다.</div>
                          (document.getElementById('regexFlagM').checked ? 'm' : '');
 
             try {
-                const regex = new RegExp(pattern, flags);
-                const matches = testString.match(regex) || [];
+                const walkRegex = new RegExp(pattern, flags.includes('g') ? flags : flags + 'g');
+                const matches = [];
+                let m, guard = 0;
+                while ((m = walkRegex.exec(testString)) !== null) {
+                    matches.push(m[0]);
+                    if (m[0] === '') walkRegex.lastIndex++;
+                    if (!flags.includes('g')) break;
+                    if (++guard > 100000) break;
+                }
+                if (matches.length === 0) {
+                    Utils.showToast('복사할 매칭 결과가 없습니다.', true);
+                    return;
+                }
                 navigator.clipboard.writeText(matches.join('\n'));
                 Utils.showToast('매칭 결과가 복사되었습니다!');
             } catch (e) {
-                Utils.showToast('복사할 수 없습니다.');
+                Utils.showToast('복사할 수 없습니다.', true);
             }
         }
 
@@ -3225,30 +3352,50 @@ UUID가 여기에 표시됩니다.</div>
             updateAllColorFormats(hex);
         }
 
+        function setColorValidity(el, ok) {
+            el.classList.toggle('input-invalid', !ok && el.value.trim() !== '');
+        }
+
         function updateFromHex() {
-            let hex = document.getElementById('colorHex').value.trim();
+            const el = document.getElementById('colorHex');
+            let hex = el.value.trim();
             if (!hex.startsWith('#')) hex = '#' + hex;
+            // 3자리 축약형(#abc) → 6자리로 확장
+            if (/^#[0-9A-Fa-f]{3}$/.test(hex)) {
+                hex = '#' + hex.slice(1).split('').map(c => c + c).join('');
+            }
             if (/^#[0-9A-Fa-f]{6}$/.test(hex)) {
+                setColorValidity(el, true);
                 updateAllColorFormats(hex);
+            } else {
+                setColorValidity(el, false);
             }
         }
 
         function updateFromRgb() {
-            const rgb = document.getElementById('colorRgb').value.trim();
+            const el = document.getElementById('colorRgb');
+            const rgb = el.value.trim();
             const match = rgb.match(/rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/i);
-            if (match) {
+            if (match && [1, 2, 3].every(k => parseInt(match[k]) <= 255)) {
+                setColorValidity(el, true);
                 const hex = rgbToHex(parseInt(match[1]), parseInt(match[2]), parseInt(match[3]));
                 updateAllColorFormats(hex, 'rgb');
+            } else {
+                setColorValidity(el, false);
             }
         }
 
         function updateFromHsl() {
-            const hsl = document.getElementById('colorHsl').value.trim();
+            const el = document.getElementById('colorHsl');
+            const hsl = el.value.trim();
             const match = hsl.match(/hsl\s*\(\s*(\d+)\s*,\s*(\d+)%?\s*,\s*(\d+)%?\s*\)/i);
-            if (match) {
+            if (match && parseInt(match[1]) <= 360 && parseInt(match[2]) <= 100 && parseInt(match[3]) <= 100) {
+                setColorValidity(el, true);
                 const rgb = hslToRgb(parseInt(match[1]), parseInt(match[2]), parseInt(match[3]));
                 const hex = rgbToHex(rgb.r, rgb.g, rgb.b);
                 updateAllColorFormats(hex, 'hsl');
+            } else {
+                setColorValidity(el, false);
             }
         }
 
@@ -3260,6 +3407,9 @@ UUID가 여기에 표시됩니다.</div>
 
             document.getElementById('colorPreview').style.background = hex;
             document.getElementById('colorPicker').value = hex;
+
+            // 유효한 색상이 반영되면 모든 입력의 오류 표시 해제
+            ['colorHex', 'colorRgb', 'colorHsl'].forEach(id => document.getElementById(id).classList.remove('input-invalid'));
 
             if (skipInput !== 'hex') document.getElementById('colorHex').value = hex.toUpperCase();
             if (skipInput !== 'rgb') document.getElementById('colorRgb').value = `rgb(${r}, ${g}, ${b})`;
@@ -3345,8 +3495,8 @@ UUID가 여기에 표시됩니다.</div>
             }
 
             try {
-                const header = JSON.parse(atob(parts[0]));
-                const payload = JSON.parse(atob(parts[1]));
+                const header = JSON.parse(Utils.base64UrlDecode(parts[0]));
+                const payload = JSON.parse(Utils.base64UrlDecode(parts[1]));
 
                 headerEl.textContent = JSON.stringify(header, null, 2);
 
@@ -3411,23 +3561,22 @@ UUID가 여기에 표시됩니다.</div>
             }
 
             try {
-                const lines = csv.split('\n').filter(line => line.trim());
+                const rows = parseCsv(csv, delimiter)
+                    .filter(r => !(r.length === 1 && r[0].trim() === '')); // 완전히 빈 줄 제거
                 const result = [];
 
-                if (hasHeader && lines.length > 0) {
-                    const headers = parseCsvLine(lines[0], delimiter);
-                    for (let i = 1; i < lines.length; i++) {
-                        const values = parseCsvLine(lines[i], delimiter);
+                if (hasHeader && rows.length > 0) {
+                    const headers = rows[0].map(h => h.trim());
+                    for (let i = 1; i < rows.length; i++) {
+                        const values = rows[i];
                         const obj = {};
                         headers.forEach((header, idx) => {
-                            obj[header.trim()] = values[idx]?.trim() || '';
+                            obj[header] = (values[idx] ?? '').trim();
                         });
                         result.push(obj);
                     }
                 } else {
-                    lines.forEach(line => {
-                        result.push(parseCsvLine(line, delimiter));
-                    });
+                    rows.forEach(r => result.push(r));
                 }
 
                 document.getElementById('csvToJsonOutput').textContent = JSON.stringify(result, null, 2);
@@ -3436,24 +3585,43 @@ UUID가 여기에 표시됩니다.</div>
             }
         }
 
-        function parseCsvLine(line, delimiter) {
-            const result = [];
+        // 전체 CSV 텍스트를 행/필드 2차원 배열로 파싱 — 이스케이프 따옴표("")와 따옴표 내부 줄바꿈 지원
+        function parseCsv(text, delimiter) {
+            const rows = [];
+            let row = [];
             let current = '';
             let inQuotes = false;
 
-            for (let i = 0; i < line.length; i++) {
-                const char = line[i];
-                if (char === '"') {
-                    inQuotes = !inQuotes;
-                } else if (char === delimiter && !inQuotes) {
-                    result.push(current);
-                    current = '';
+            for (let i = 0; i < text.length; i++) {
+                const char = text[i];
+                if (inQuotes) {
+                    if (char === '"') {
+                        if (text[i + 1] === '"') { current += '"'; i++; } // "" → 이스케이프된 따옴표
+                        else inQuotes = false;
+                    } else {
+                        current += char;
+                    }
                 } else {
-                    current += char;
+                    if (char === '"') {
+                        inQuotes = true;
+                    } else if (char === delimiter) {
+                        row.push(current);
+                        current = '';
+                    } else if (char === '\n') {
+                        row.push(current);
+                        rows.push(row);
+                        row = [];
+                        current = '';
+                    } else if (char === '\r') {
+                        // \r\n 의 \r 은 무시
+                    } else {
+                        current += char;
+                    }
                 }
             }
-            result.push(current);
-            return result;
+            row.push(current);
+            rows.push(row);
+            return rows;
         }
 
         function convertJsonToCsv() {
@@ -3471,22 +3639,35 @@ UUID가 여기에 표시됩니다.</div>
                 if (!Array.isArray(data) || data.length === 0) {
                     throw new Error('JSON 배열 형식이어야 합니다.');
                 }
-
-                const headers = Object.keys(data[0]);
-                const lines = [];
-
-                if (includeHeader) {
-                    lines.push(headers.join(delimiter));
+                if (!data.every(item => item && typeof item === 'object' && !Array.isArray(item))) {
+                    throw new Error('배열의 각 요소는 객체({ })여야 합니다.');
                 }
 
-                data.forEach(row => {
-                    const values = headers.map(h => {
-                        const val = row[h] ?? '';
-                        return String(val).includes(delimiter) || String(val).includes('"')
-                            ? `"${String(val).replace(/"/g, '""')}"`
-                            : val;
+                // 모든 객체의 키를 합집합으로 수집 (행마다 키가 달라도 컬럼 누락 없음)
+                const headers = [];
+                const seen = new Set();
+                data.forEach(item => {
+                    Object.keys(item).forEach(k => {
+                        if (!seen.has(k)) { seen.add(k); headers.push(k); }
                     });
-                    lines.push(values.join(delimiter));
+                });
+
+                const escapeCell = (val) => {
+                    if (val === null || val === undefined) return '';
+                    // 중첩 객체/배열은 [object Object] 대신 JSON 문자열로
+                    let s = typeof val === 'object' ? JSON.stringify(val) : String(val);
+                    if (s.includes(delimiter) || s.includes('"') || s.includes('\n') || s.includes('\r')) {
+                        s = `"${s.replace(/"/g, '""')}"`;
+                    }
+                    return s;
+                };
+
+                const lines = [];
+                if (includeHeader) {
+                    lines.push(headers.map(escapeCell).join(delimiter));
+                }
+                data.forEach(row => {
+                    lines.push(headers.map(h => escapeCell(row[h])).join(delimiter));
                 });
 
                 document.getElementById('jsonToCsvOutput').textContent = lines.join('\n');
@@ -3521,13 +3702,13 @@ UUID가 여기에 표시됩니다.</div>
 
         function copyOutput(outputId) {
             const output = document.getElementById(outputId);
-            const text = output.textContent;
 
-            if (!text || text.includes('여기에 표시됩니다') || text.includes('결과가 여기에')) {
+            if (Utils.isEmptyOutput(output)) {
                 Utils.showToast('복사할 내용이 없습니다.', true);
                 return;
             }
 
+            const text = output.textContent;
             navigator.clipboard.writeText(text).then(() => {
                 Utils.showToast('클립보드에 복사되었습니다!');
             }).catch(() => {
@@ -3537,6 +3718,7 @@ UUID가 여기에 표시됩니다.</div>
 
         /* ==================== Initialize ==================== */
         document.addEventListener('DOMContentLoaded', () => {
+            Utils.capturePlaceholders();
             Theme.init();
             Navigation.init();
             CharCounter.init();
