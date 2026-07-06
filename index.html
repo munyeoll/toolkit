@@ -1157,6 +1157,16 @@
         }
 
         /* ==================== JWT Decoder ==================== */
+        .tool-info {
+            background: rgba(99, 102, 241, 0.08);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            color: var(--text-secondary);
+            padding: 10px 14px;
+            border-radius: var(--radius-md);
+            font-size: 0.85rem;
+            margin-bottom: 16px;
+        }
+
         .tool-warning {
             background: rgba(245, 158, 11, 0.15);
             border: 1px solid var(--warning);
@@ -2219,7 +2229,7 @@ UUID가 여기에 표시됩니다.</div>
                 <section class="tool-section" id="jwt-decoder">
                     <h2><span class="tool-icon">🔑</span> JWT 디코더</h2>
                     <p class="tool-description">JWT 토큰을 디코딩하여 Header, Payload, Signature를 확인합니다.</p>
-                    <p class="tool-warning">🔍 토큰의 내용을 확인하는 용도입니다. 서명 검증은 포함되지 않아요.</p>
+                    <p class="tool-info">🔍 토큰의 내용을 확인하는 용도입니다. 서명 검증은 포함되지 않아요.</p>
 
                     <div class="input-group">
                         <label>JWT 토큰</label>
