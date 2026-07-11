@@ -904,6 +904,85 @@
             font-size: 0.85rem;
         }
 
+        /* ==================== Cron Parser ==================== */
+        .cron-input-row {
+            display: flex;
+            gap: 10px;
+            align-items: stretch;
+        }
+
+        .cron-input-row input {
+            flex: 1;
+        }
+
+        .cron-input-row .btn-secondary {
+            flex-shrink: 0;
+        }
+
+        .cron-examples {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 12px 0 4px;
+        }
+
+        .cron-example-btn {
+            background: var(--bg-tertiary);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 0.8rem;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .cron-example-btn:hover {
+            border-color: var(--accent);
+            color: var(--text-primary);
+        }
+
+        .cron-summary {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--accent);
+            border-radius: var(--radius-md);
+            padding: 16px 18px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: var(--text-primary);
+        }
+
+        /* ==================== Hash Generator ==================== */
+        .hash-results {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-top: 4px;
+        }
+
+        .hash-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .hash-algo {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--accent-light);
+        }
+
+        .hash-output {
+            word-break: break-all;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+        }
+
         /* ==================== Custom Select ==================== */
         select {
             background: var(--bg-primary);
@@ -1174,6 +1253,80 @@
             border-radius: var(--radius-md);
             font-size: 0.85rem;
             margin-bottom: 16px;
+        }
+
+        .tool-info code,
+        .url-guide code {
+            background: rgba(99, 102, 241, 0.15);
+            padding: 1px 5px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-primary);
+        }
+
+        /* URL 인코딩 안내 카드 */
+        .url-guide {
+            background: rgba(99, 102, 241, 0.06);
+            border: 1px solid rgba(99, 102, 241, 0.25);
+            border-radius: var(--radius-md);
+            padding: 6px 16px;
+            margin-bottom: 16px;
+        }
+
+        .url-guide-row {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            padding: 12px 0;
+        }
+
+        .url-guide-row + .url-guide-row {
+            border-top: 1px dashed var(--border);
+        }
+
+        .url-guide-tag {
+            flex-shrink: 0;
+            margin-top: 1px;
+            min-width: 74px;
+            text-align: center;
+            background: var(--accent);
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.78rem;
+            padding: 4px 10px;
+            border-radius: 999px;
+        }
+
+        .url-guide-tag.alt {
+            background: transparent;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+        }
+
+        .url-guide-desc {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            line-height: 1.4;
+        }
+
+        .url-guide-desc strong {
+            color: var(--text-primary);
+        }
+
+        .url-guide-note {
+            color: var(--text-muted);
+            font-size: 0.82rem;
+        }
+
+        .url-guide-tip {
+            border-top: 1px solid var(--border);
+            padding: 10px 0 4px;
+            color: var(--text-secondary);
+            font-size: 0.84rem;
         }
 
         .tool-warning {
@@ -1630,6 +1783,14 @@
                 <span class="menu-icon">🔑</span>
                 <span class="menu-text">JWT 디코더</span>
             </a>
+            <a class="menu-item" data-section="cron-parser" data-keywords="cron 크론 크론탭 crontab 스케줄 예약 표현식 주기 실행시간">
+                <span class="menu-icon">⏱️</span>
+                <span class="menu-text">Cron 표현식 해석기</span>
+            </a>
+            <a class="menu-item" data-section="hash-gen" data-keywords="해시 hash sha sha256 sha512 sha1 체크섬 checksum 다이제스트 digest 무결성">
+                <span class="menu-icon">#️⃣</span>
+                <span class="menu-text">해시 생성기</span>
+            </a>
 
             <div class="menu-category" data-category="data-processing">데이터 처리</div>
             <a class="menu-item" data-section="csv-json" data-keywords="csv json 변환 데이터 테이블">
@@ -1938,6 +2099,24 @@
                 <section class="tool-section" id="url-encode">
                     <h2><span class="tool-icon">🔗</span> URL 인코딩</h2>
                     <p class="tool-description">URL 파라미터를 인코딩하거나 디코딩합니다.</p>
+
+                    <div class="url-guide">
+                        <div class="url-guide-row">
+                            <span class="url-guide-tag">인코딩</span>
+                            <div class="url-guide-desc">
+                                <span><strong>주소 전체</strong>를 인코딩 <code>encodeURI</code></span>
+                                <span class="url-guide-note">구조 문자 <code>: / ? # &amp; =</code> 는 그대로 유지</span>
+                            </div>
+                        </div>
+                        <div class="url-guide-row">
+                            <span class="url-guide-tag alt">컴포넌트</span>
+                            <div class="url-guide-desc">
+                                <span><strong>쿼리 값 하나</strong>를 인코딩 <code>encodeURIComponent</code></span>
+                                <span class="url-guide-note">구조 문자까지 모두 <code>%XX</code> 로 변환</span>
+                            </div>
+                        </div>
+                        <div class="url-guide-tip">💡 값 안에 <code>&amp;</code> <code>=</code> <code>/</code> 가 들어가면 → <strong>컴포넌트</strong></div>
+                    </div>
 
                     <div class="error-message" id="urlError"></div>
 
@@ -2358,6 +2537,93 @@ UUID가 여기에 표시됩니다.</div>
                     </div>
                 </section>
 
+                <!-- 18. Cron 표현식 해석기 -->
+                <section class="tool-section" id="cron-parser">
+                    <h2><span class="tool-icon">⏱️</span> Cron 표현식 해석기</h2>
+                    <p class="tool-description">Cron 표현식을 사람이 읽는 설명과 다음 실행 시각으로 변환합니다.</p>
+                    <p class="tool-info">⏱️ 표준 5필드(분 시 일 월 요일) 형식과 @daily 같은 단축 표현을 지원해요. 시각은 브라우저 로컬 시간대 기준입니다.</p>
+
+                    <div class="input-group">
+                        <label>Cron 표현식</label>
+                        <div class="cron-input-row">
+                            <input type="text" id="cronInput" placeholder="예: */15 9-18 * * 1-5" oninput="parseCron()">
+                            <button class="btn btn-secondary" onclick="clearCron()">초기화</button>
+                        </div>
+                    </div>
+
+                    <div class="cron-examples">
+                        <button class="cron-example-btn" onclick="setCronExample('* * * * *')">매 분</button>
+                        <button class="cron-example-btn" onclick="setCronExample('0 * * * *')">매시 정각</button>
+                        <button class="cron-example-btn" onclick="setCronExample('0 0 * * *')">매일 자정</button>
+                        <button class="cron-example-btn" onclick="setCronExample('*/15 9-18 * * 1-5')">평일 9~18시 15분마다</button>
+                        <button class="cron-example-btn" onclick="setCronExample('0 9 1 * *')">매월 1일 09시</button>
+                        <button class="cron-example-btn" onclick="setCronExample('@weekly')">@weekly</button>
+                    </div>
+
+                    <div class="error-message" id="cronError"></div>
+
+                    <div id="cronResult" style="display:none;">
+                        <div class="cron-summary" id="cronSummary"></div>
+
+                        <div class="output-header">
+                            <h3>필드 분석</h3>
+                        </div>
+                        <div class="timestamp-result" id="cronBreakdown"></div>
+
+                        <div class="output-header">
+                            <h3>다음 실행 시각</h3>
+                        </div>
+                        <div class="timestamp-result" id="cronNextRuns"></div>
+                    </div>
+                </section>
+
+                <!-- 19. 해시 생성기 -->
+                <section class="tool-section" id="hash-gen">
+                    <h2><span class="tool-icon">#️⃣</span> 해시 생성기</h2>
+                    <p class="tool-description">텍스트를 SHA 해시로 변환합니다. (SHA-1 / SHA-256 / SHA-384 / SHA-512)</p>
+                    <p class="tool-info">🔒 브라우저 내장 <code>crypto.subtle</code>로 계산되어 입력값이 서버로 전송되지 않아요. MD5는 표준 웹 API에서 지원하지 않아 제외했고, SHA-1은 충돌 취약점이 있어 보안 용도로는 권장되지 않습니다.</p>
+
+                    <div class="input-group">
+                        <label>텍스트 입력</label>
+                        <textarea id="hashInput" placeholder="해시로 변환할 텍스트를 입력하세요." oninput="computeHashes()"></textarea>
+                    </div>
+
+                    <div class="btn-group">
+                        <button class="btn btn-secondary" onclick="clearHash()">초기화</button>
+                    </div>
+
+                    <div class="hash-results">
+                        <div class="hash-item">
+                            <div class="hash-item-header">
+                                <span class="hash-algo">SHA-1</span>
+                                <button class="btn btn-copy-sm" onclick="copyOutput('hashSha1')">📋</button>
+                            </div>
+                            <div class="output-area hash-output" id="hashSha1">해시가 여기에 표시됩니다.</div>
+                        </div>
+                        <div class="hash-item">
+                            <div class="hash-item-header">
+                                <span class="hash-algo">SHA-256</span>
+                                <button class="btn btn-copy-sm" onclick="copyOutput('hashSha256')">📋</button>
+                            </div>
+                            <div class="output-area hash-output" id="hashSha256">해시가 여기에 표시됩니다.</div>
+                        </div>
+                        <div class="hash-item">
+                            <div class="hash-item-header">
+                                <span class="hash-algo">SHA-384</span>
+                                <button class="btn btn-copy-sm" onclick="copyOutput('hashSha384')">📋</button>
+                            </div>
+                            <div class="output-area hash-output" id="hashSha384">해시가 여기에 표시됩니다.</div>
+                        </div>
+                        <div class="hash-item">
+                            <div class="hash-item-header">
+                                <span class="hash-algo">SHA-512</span>
+                                <button class="btn btn-copy-sm" onclick="copyOutput('hashSha512')">📋</button>
+                            </div>
+                            <div class="output-area hash-output" id="hashSha512">해시가 여기에 표시됩니다.</div>
+                        </div>
+                    </div>
+                </section>
+
             </div>
 
             <!-- 광고 영역 - 우측 사이드바 (300x250) -->
@@ -2485,6 +2751,8 @@ UUID가 여기에 표시됩니다.</div>
                     'regex-tester': 'dev-tools',
                     'color-converter': 'dev-tools',
                     'jwt-decoder': 'dev-tools',
+                    'cron-parser': 'dev-tools',
+                    'hash-gen': 'dev-tools',
                     'text-diff': 'text-analysis',
                     'csv-json': 'data-processing',
                     'date-calc': 'calc-gen',
@@ -3714,6 +3982,277 @@ UUID가 여기에 표시됩니다.</div>
             link.download = 'data.csv';
             link.click();
             Utils.showToast('CSV 파일이 다운로드되었습니다!');
+        }
+
+        /* ==================== Cron 표현식 해석기 ==================== */
+        const CRON_SHORTCUTS = {
+            '@yearly': '0 0 1 1 *', '@annually': '0 0 1 1 *',
+            '@monthly': '0 0 1 * *', '@weekly': '0 0 * * 0',
+            '@daily': '0 0 * * *', '@midnight': '0 0 * * *',
+            '@hourly': '0 * * * *'
+        };
+        const CRON_MONTH_NAMES = { jan:1,feb:2,mar:3,apr:4,may:5,jun:6,jul:7,aug:8,sep:9,oct:10,nov:11,dec:12 };
+        const CRON_DOW_NAMES = { sun:0,mon:1,tue:2,wed:3,thu:4,fri:5,sat:6 };
+        const CRON_DOW_KO = ['일','월','화','수','목','금','토'];
+        const CRON_MONTH_KO = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+
+        function setCronExample(expr) {
+            document.getElementById('cronInput').value = expr;
+            parseCron();
+        }
+
+        // 단일 필드를 허용 값 Set으로 파싱 — 목록(,) 범위(-) 간격(/) 및 이름(jan, mon)을 지원
+        function parseCronField(expr, min, max, names) {
+            const resolve = (tok) => {
+                const t = tok.trim().toLowerCase();
+                if (names && names[t] !== undefined) return names[t];
+                if (!/^\d+$/.test(t)) throw new Error(`알 수 없는 값: "${tok}"`);
+                return parseInt(t, 10);
+            };
+
+            const set = new Set();
+            for (const part of expr.split(',')) {
+                let rangePart = part;
+                let step = 1;
+                if (part.includes('/')) {
+                    const seg = part.split('/');
+                    if (seg.length !== 2 || !/^\d+$/.test(seg[1]) || parseInt(seg[1]) < 1) {
+                        throw new Error(`잘못된 간격: "${part}"`);
+                    }
+                    rangePart = seg[0];
+                    step = parseInt(seg[1], 10);
+                }
+
+                let lo, hi;
+                if (rangePart === '*') {
+                    lo = min; hi = max;
+                } else if (rangePart.includes('-')) {
+                    const seg = rangePart.split('-');
+                    if (seg.length !== 2) throw new Error(`잘못된 범위: "${rangePart}"`);
+                    lo = resolve(seg[0]); hi = resolve(seg[1]);
+                } else {
+                    lo = hi = resolve(rangePart);
+                }
+
+                if (lo < min || hi > max || lo > hi) {
+                    throw new Error(`허용 범위(${min}-${max})를 벗어남: "${part}"`);
+                }
+                for (let i = lo; i <= hi; i += step) set.add(i);
+            }
+            return set;
+        }
+
+        function parseCronExpression(raw) {
+            let expr = raw.trim().toLowerCase();
+            if (CRON_SHORTCUTS[expr]) expr = CRON_SHORTCUTS[expr];
+
+            const fields = expr.split(/\s+/);
+            if (fields.length !== 5) {
+                throw new Error('표준 5필드(분 시 일 월 요일) 형식이어야 합니다.');
+            }
+
+            const [minE, hourE, domE, monE, dowE] = fields;
+            const minutes = parseCronField(minE, 0, 59, null);
+            const hours = parseCronField(hourE, 0, 23, null);
+            const doms = parseCronField(domE, 1, 31, null);
+            const months = parseCronField(monE, 1, 12, CRON_MONTH_NAMES);
+            const dowRaw = parseCronField(dowE, 0, 7, CRON_DOW_NAMES);
+            const dows = new Set([...dowRaw].map(d => d === 7 ? 0 : d)); // 7 → 0 (일요일)
+
+            return {
+                minutes, hours, doms, months, dows,
+                raw: { min: minE, hour: hourE, dom: domE, mon: monE, dow: dowE },
+                domStar: domE === '*',
+                dowStar: dowE === '*'
+            };
+        }
+
+        // dom·dow가 모두 제한되면 OR, 하나라도 *면 AND (표준 cron 규칙)
+        function cronDayMatches(f, date) {
+            const domOK = f.doms.has(date.getDate());
+            const dowOK = f.dows.has(date.getDay());
+            if (f.domStar || f.dowStar) return domOK && dowOK;
+            return domOK || dowOK;
+        }
+
+        function cronNextRuns(f, count, from) {
+            const results = [];
+            const d = new Date(from);
+            d.setSeconds(0, 0);
+            d.setMinutes(d.getMinutes() + 1); // 다음 분부터 탐색
+            const limit = new Date(from);
+            limit.setFullYear(limit.getFullYear() + 5); // 무한 탐색 방지
+
+            while (results.length < count && d <= limit) {
+                if (!f.months.has(d.getMonth() + 1)) {
+                    d.setMonth(d.getMonth() + 1, 1); d.setHours(0, 0, 0, 0); continue;
+                }
+                if (!cronDayMatches(f, d)) {
+                    d.setDate(d.getDate() + 1); d.setHours(0, 0, 0, 0); continue;
+                }
+                if (!f.hours.has(d.getHours())) {
+                    d.setHours(d.getHours() + 1, 0, 0, 0); continue;
+                }
+                if (!f.minutes.has(d.getMinutes())) {
+                    d.setMinutes(d.getMinutes() + 1, 0, 0); continue;
+                }
+                results.push(new Date(d));
+                d.setMinutes(d.getMinutes() + 1);
+            }
+            return results;
+        }
+
+        // 필드 표현식을 한국어 설명으로 (formatter로 월·요일 이름 매핑)
+        function describeCronField(expr, values, unit, formatter) {
+            const fmt = formatter || (v => `${v}${unit}`);
+            if (expr === '*') return unit === '요일' ? '매일(모든 요일)' : `매 ${unit}`;
+            const step = expr.match(/^\*\/(\d+)$/);
+            if (step) return `${step[1]}${unit}마다`;
+            const rangeAll = expr.match(/^(\d+)-(\d+)$/);
+            if (rangeAll) return `${fmt(+rangeAll[1])}부터 ${fmt(+rangeAll[2])}까지`;
+            const vals = [...values].sort((a, b) => a - b);
+            if (vals.length > 12) return `${fmt(vals[0])} ~ ${fmt(vals[vals.length - 1])} (${vals.length}개)`;
+            return vals.map(fmt).join(', ');
+        }
+
+        function cronTimePhrase(f) {
+            const r = f.raw;
+            const hStar = r.hour === '*', mStar = r.min === '*';
+            const mStep = r.min.match(/^\*\/(\d+)$/);
+            const hStep = r.hour.match(/^\*\/(\d+)$/);
+
+            if (hStar && mStar) return '매 분';
+            if (hStar) return mStep ? `매시간 ${mStep[1]}분마다` : `매시간 ${describeCronField(r.min, f.minutes, '분')}`;
+            if (mStar) return `${describeCronField(r.hour, f.hours, '시')} 매 분`;
+
+            const hourPhrase = hStep ? `${hStep[1]}시간마다` : describeCronField(r.hour, f.hours, '시');
+            const minPhrase = mStep ? `${mStep[1]}분마다` : describeCronField(r.min, f.minutes, '분');
+            return `${hourPhrase} ${minPhrase}`;
+        }
+
+        function cronDatePhrase(f) {
+            const r = f.raw;
+            const monthPart = r.mon === '*' ? '' : describeCronField(r.mon, f.months, '월', v => CRON_MONTH_KO[v - 1]);
+            const dowFmt = v => CRON_DOW_KO[v] + '요일';
+            const domR = r.dom !== '*', dowR = r.dow !== '*';
+
+            let dayPart;
+            if (domR && dowR) {
+                dayPart = `${describeCronField(r.dom, f.doms, '일')} 또는 ${describeCronField(r.dow, f.dows, '요일', dowFmt)}`;
+            } else if (domR) {
+                dayPart = describeCronField(r.dom, f.doms, '일');
+            } else if (dowR) {
+                dayPart = describeCronField(r.dow, f.dows, '요일', dowFmt);
+            } else {
+                dayPart = '매일';
+            }
+            return [monthPart, dayPart].filter(Boolean).join(' ');
+        }
+
+        function cronSummaryText(f) {
+            const timePart = cronTimePhrase(f);
+            const datePart = cronDatePhrase(f);
+            const connector = /(마다|매 분)$/.test(timePart) ? ' ' : '에 ';
+            return `${datePart} ${timePart}${connector}실행됩니다.`;
+        }
+
+        function cronFormatDate(d) {
+            const pad = n => String(n).padStart(2, '0');
+            return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} (${CRON_DOW_KO[d.getDay()]}) ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+        }
+
+        function clearCron() {
+            document.getElementById('cronInput').value = '';
+            document.getElementById('cronResult').style.display = 'none';
+            Utils.hideError('cronError');
+        }
+
+        function parseCron() {
+            const raw = document.getElementById('cronInput').value;
+            const resultEl = document.getElementById('cronResult');
+            Utils.hideError('cronError');
+
+            if (!raw.trim()) {
+                resultEl.style.display = 'none';
+                return;
+            }
+
+            let f;
+            try {
+                f = parseCronExpression(raw);
+            } catch (e) {
+                resultEl.style.display = 'none';
+                Utils.showError('cronError', `해석 오류: ${e.message}`);
+                return;
+            }
+
+            document.getElementById('cronSummary').textContent = cronSummaryText(f);
+
+            const rows = [
+                ['분 (0-59)', describeCronField(f.raw.min, f.minutes, '분')],
+                ['시 (0-23)', describeCronField(f.raw.hour, f.hours, '시')],
+                ['일 (1-31)', describeCronField(f.raw.dom, f.doms, '일')],
+                ['월 (1-12)', describeCronField(f.raw.mon, f.months, '월', v => CRON_MONTH_KO[v - 1])],
+                ['요일 (0-7)', describeCronField(f.raw.dow, f.dows, '요일', v => CRON_DOW_KO[v] + '요일')]
+            ];
+            document.getElementById('cronBreakdown').innerHTML = rows.map(([k, v]) =>
+                `<div class="timestamp-item"><span>${k}</span><span>${Utils.escapeHtml(v)}</span></div>`
+            ).join('');
+
+            const runs = cronNextRuns(f, 5, new Date());
+            const nextEl = document.getElementById('cronNextRuns');
+            if (runs.length === 0) {
+                nextEl.innerHTML = `<div class="timestamp-item"><span>결과</span><span>향후 5년 내 실행 시각이 없습니다.</span></div>`;
+            } else {
+                nextEl.innerHTML = runs.map((d, i) => {
+                    const label = i === 0 ? '다음 실행' : `${i + 1}번째`;
+                    return `<div class="timestamp-item"><span>${label}</span><span>${cronFormatDate(d)}</span></div>`;
+                }).join('');
+            }
+
+            resultEl.style.display = 'block';
+        }
+
+        /* ==================== 해시 생성기 ==================== */
+        const HASH_ALGOS = [
+            ['SHA-1', 'hashSha1'],
+            ['SHA-256', 'hashSha256'],
+            ['SHA-384', 'hashSha384'],
+            ['SHA-512', 'hashSha512']
+        ];
+        let hashRunId = 0; // 빠른 연속 입력 시 오래된 결과가 덮어쓰지 않도록 방어
+
+        function hashBufferToHex(buffer) {
+            return [...new Uint8Array(buffer)].map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        async function computeHashes() {
+            const runId = ++hashRunId;
+            const text = document.getElementById('hashInput').value;
+
+            if (!text) {
+                HASH_ALGOS.forEach(([, id]) => {
+                    document.getElementById(id).textContent = '해시가 여기에 표시됩니다.';
+                });
+                return;
+            }
+
+            const data = new TextEncoder().encode(text);
+            for (const [algo, id] of HASH_ALGOS) {
+                try {
+                    const buf = await crypto.subtle.digest(algo, data);
+                    if (runId !== hashRunId) return; // 더 최신 입력이 있으면 폐기
+                    document.getElementById(id).textContent = hashBufferToHex(buf);
+                } catch (e) {
+                    if (runId !== hashRunId) return;
+                    document.getElementById(id).textContent = '계산 오류';
+                }
+            }
+        }
+
+        function clearHash() {
+            document.getElementById('hashInput').value = '';
+            computeHashes();
         }
 
         /* ==================== Common Functions ==================== */
