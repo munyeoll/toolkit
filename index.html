@@ -196,7 +196,9 @@
             background: var(--bg-secondary);
             border-right: 1px solid var(--border);
             position: fixed;
+            top: 0;
             height: 100vh;
+            height: 100dvh; /* 모바일 주소창 영역 제외한 실제 높이 — footer 잘림 방지 */
             overflow: hidden;
             z-index: 100;
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -219,13 +221,35 @@
         }
 
         .sidebar-header {
-            padding: 24px;
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
             border-bottom: 1px solid var(--border);
             background: var(--gradient-3);
         }
 
+        .sidebar-close {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            line-height: 1;
+            cursor: pointer;
+            padding: 6px 8px;
+            border-radius: var(--radius-sm);
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .sidebar-close:hover {
+            color: var(--text-primary);
+            background: var(--bg-card-hover);
+        }
+
         .sidebar-header h1 {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             font-weight: 700;
             background: var(--gradient-1);
             -webkit-background-clip: text;
@@ -233,49 +257,49 @@
             background-clip: text;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
         .sidebar-header h1 .logo-icon {
-            width: 36px;
-            height: 36px;
+            width: 28px;
+            height: 28px;
             background: var(--gradient-1);
             border-radius: var(--radius-sm);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+            font-size: 0.95rem;
             -webkit-text-fill-color: white;
         }
 
         .menu-category {
-            padding: 20px 24px 8px;
-            font-size: 0.7rem;
+            padding: 14px 20px 6px;
+            font-size: 0.68rem;
             font-weight: 600;
             text-transform: uppercase;
             color: var(--text-muted);
-            letter-spacing: 1.5px;
+            letter-spacing: 1.2px;
         }
 
         .menu-item {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 12px 24px;
+            gap: 11px;
+            padding: 8px 20px;
             color: var(--text-secondary);
             text-decoration: none;
-            font-size: 0.9rem;
+            font-size: 0.875rem;
             font-weight: 500;
             transition: all 0.2s ease;
             cursor: pointer;
             border-left: 3px solid transparent;
-            margin: 2px 0;
+            margin: 1px 0;
         }
 
         .menu-item .menu-icon {
-            width: 20px;
+            width: 18px;
             text-align: center;
-            font-size: 1rem;
+            font-size: 0.95rem;
         }
 
         .menu-item:hover {
@@ -390,8 +414,8 @@
         .content-wrapper {
             display: flex;
             flex: 1;
-            padding: 32px;
-            gap: 32px;
+            padding: 24px;
+            gap: 24px;
         }
 
         .tool-area {
@@ -424,7 +448,7 @@
             display: none;
             background: var(--bg-secondary);
             border-radius: var(--radius-xl);
-            padding: 32px;
+            padding: 28px;
             border: 1px solid var(--border);
             box-shadow: var(--shadow-md);
         }
@@ -446,49 +470,49 @@
         }
 
         .tool-section h2 {
-            font-size: 1.75rem;
+            font-size: 1.4rem;
             font-weight: 700;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
         .tool-section h2 .tool-icon {
-            width: 48px;
-            height: 48px;
+            width: 40px;
+            height: 40px;
             background: var(--gradient-2);
             border-radius: var(--radius-md);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.4rem;
+            font-size: 1.15rem;
             box-shadow: var(--shadow-glow);
         }
 
         .tool-description {
             color: var(--text-secondary);
-            margin-bottom: 28px;
-            font-size: 0.95rem;
-            padding-left: 60px;
+            margin-bottom: 24px;
+            font-size: 0.9rem;
+            padding-left: 52px;
         }
 
         /* ==================== Form Elements ==================== */
         .input-group {
-            margin-bottom: 24px;
+            margin-bottom: 18px;
         }
 
         .input-group label {
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             color: var(--text-secondary);
-            font-size: 0.875rem;
+            font-size: 0.85rem;
             font-weight: 500;
         }
 
         textarea, input[type="text"], input[type="number"], input[type="date"], input[type="datetime-local"] {
             width: 100%;
-            padding: 16px 16px 16px 36px;
+            padding: 12px 14px;
             background: var(--bg-primary);
             border: 1px solid var(--border);
             border-radius: var(--radius-md);
@@ -499,7 +523,7 @@
         }
 
         textarea {
-            min-height: 160px;
+            min-height: 140px;
             resize: vertical;
         }
 
@@ -794,6 +818,10 @@
                 display: block;
             }
 
+            .sidebar-close {
+                display: block;
+            }
+
             .header {
                 padding: 0 20px;
             }
@@ -1026,7 +1054,7 @@
 
         /* ==================== Search Box ==================== */
         .search-box {
-            padding: 16px 24px;
+            padding: 12px 16px;
             border-bottom: 1px solid var(--border);
         }
 
@@ -1038,21 +1066,21 @@
 
         .search-input-wrapper .search-icon {
             position: absolute;
-            left: 14px;
+            left: 12px;
             color: var(--text-muted);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             pointer-events: none;
         }
 
-        .search-input {
+        .search-box .search-input {
             width: 100%;
-            padding: 12px 14px 12px 44px;
+            padding: 8px 12px 8px 38px;
             background: var(--bg-primary);
             border: 1px solid var(--border);
             border-radius: var(--radius-md);
             color: var(--text-primary);
             font-family: inherit;
-            font-size: 0.875rem;
+            font-size: 0.85rem;
             transition: all 0.2s ease;
         }
 
@@ -1686,9 +1714,10 @@
 
         /* Sidebar Footer */
         .sidebar-footer {
-            padding: 16px 24px;
-            margin-top: 8px;
+            flex-shrink: 0;
+            padding: 14px 20px;
             border-top: 1px solid var(--border);
+            background: var(--bg-secondary);
             display: flex;
             flex-direction: column;
             gap: 8px;
@@ -1718,6 +1747,7 @@
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <h1><span class="logo-icon">T</span> ToolKit</h1>
+            <button class="sidebar-close" id="sidebarClose" aria-label="메뉴 닫기">✕</button>
         </div>
         <div class="search-box">
             <div class="search-input-wrapper">
@@ -1811,11 +1841,11 @@
                 <span class="menu-icon">🆔</span>
                 <span class="menu-text">UUID 생성기</span>
             </a>
-            <div class="sidebar-footer">
-                <a href="https://github.com/munyeoll/toolkit/issues/new/choose" target="_blank">버그 신고</a>
-                <a href="privacy.html">개인정보처리방침</a>
-            </div>
         </nav>
+        <div class="sidebar-footer">
+            <a href="https://github.com/munyeoll/toolkit/issues/new/choose" target="_blank">버그 신고</a>
+            <a href="privacy.html">개인정보처리방침</a>
+        </div>
     </aside>
 
     <!-- Main Content -->
@@ -2956,10 +2986,13 @@ UUID가 여기에 표시됩니다.</div>
                     overlay.classList.toggle('show');
                 });
 
-                overlay.addEventListener('click', () => {
+                const closeSidebar = () => {
                     sidebar.classList.remove('open');
                     overlay.classList.remove('show');
-                });
+                };
+
+                document.getElementById('sidebarClose').addEventListener('click', closeSidebar);
+                overlay.addEventListener('click', closeSidebar);
 
                 // 뒤로/앞으로 가기 및 직접 해시 변경 대응
                 window.addEventListener('popstate', () => this.applyHash());
