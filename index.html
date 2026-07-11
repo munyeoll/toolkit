@@ -2818,7 +2818,7 @@ UUID가 여기에 표시됩니다.</div>
         /* ==================== 4. 공백 정리 ==================== */
         function removeExtraSpaces() {
             const input = document.getElementById('whitespaceInput').value;
-            const result = input.replace(/ +/g, ' ');
+            const result = input.replace(/[ \t]+/g, ' ');
             document.getElementById('whitespaceOutput').textContent = result;
         }
 
@@ -3179,12 +3179,18 @@ UUID가 여기에 표시됩니다.</div>
 
         /* ==================== 12. UUID 생성기 ==================== */
         function generateUUID() {
-            const count = parseInt(document.getElementById('uuidCount').value) || 1;
+            const rawCount = parseInt(document.getElementById('uuidCount').value);
             const uppercase = document.getElementById('uuidUppercase').checked;
             const noDash = document.getElementById('uuidNoDash').checked;
 
+            if (!Number.isFinite(rawCount) || rawCount < 1) {
+                Utils.showToast('1개 이상의 숫자를 입력해주세요.', true);
+                return;
+            }
+            const count = Math.min(rawCount, 100);
+
             const uuids = [];
-            for (let i = 0; i < Math.min(count, 100); i++) {
+            for (let i = 0; i < count; i++) {
                 let uuid = crypto.randomUUID();
 
                 if (noDash) uuid = uuid.replace(/-/g, '');
